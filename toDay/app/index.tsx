@@ -1,3 +1,4 @@
+import { TodoList } from "@/components/TodoList";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
@@ -8,9 +9,10 @@ export default function Home() {
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
+                gap: 10,
             }}
         >
-            <Text>Showing Current Days Todos</Text>
+            <TodoList />
             <Link href="/calendar">Calendar</Link>
         </View>
     );
