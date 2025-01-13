@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { Todo } from "./Todo";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useLogAsyncStorage } from "@/hooks/useLogAsyncStorage";
 
 export type TodoType = {
     id: number;
@@ -11,20 +12,15 @@ export type TodoType = {
 
 export type TodoListProps = {
 	date: string; 
+	todoData: TodoType[];
+	setTodoData: React.Dispatch<React.SetStateAction<TodoType[]>>
 }
 
-export const TodoList: React.FC<TodoListProps> = ({date}) => {
+export const TodoList: React.FC<TodoListProps> = ({date, todoData, setTodoData}) => {
 	// format: [{ "id": 1, "label": "todo today tada", "completed": false }]
 
 
-    // get all todos as a single object
-    // on todo change, change the object state
-    const [todoData, setTodoData] = useState<TodoType[]>([]);
-
-    // logging todoData
-    // useEffect(() => {
-    // console.log(todoData);
-    // }, [todoData])
+	const logAsyncStorage = useLogAsyncStorage();
 
 	// setting todoData to their value once app opens
 	useEffect(() => {
@@ -34,8 +30,7 @@ export const TodoList: React.FC<TodoListProps> = ({date}) => {
 				
 				// make object format into array format
 				if (jsonValue != null){
-					console.log(jsonValue);
-					console.log(JSON.parse(jsonValue));
+					console.log("This day's data: ", JSON.parse(jsonValue));
 					setTodoData(JSON.parse(jsonValue) as (TodoType[]))
 					
 				}
@@ -46,6 +41,7 @@ export const TodoList: React.FC<TodoListProps> = ({date}) => {
 		};
 		getData();
 	}, [])
+
 
 	// store todoData every change 
 	useEffect(() => {

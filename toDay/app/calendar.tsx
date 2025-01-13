@@ -1,15 +1,18 @@
 import { Text, View } from "react-native";
-import Calendar from "react-calendar";
+import { Calendar } from "react-native-calendars";
 import { router } from "expo-router";
+
 
 export default function CalendarPage() {
     return (
         <View>
             <Calendar
-                // redirect to index with tododata for the todolist to render
-                onClickDay={(props) => {
-                    // console.log(props.toLocaleDateString());
-                    router.navigate({pathname: "/", params: {dateNav: props.toLocaleDateString()}})
+                onDayPress={(day : any) => {
+                    // Navigate with selected date
+                    router.navigate({
+                        pathname: "/",
+                        params: { dateNav: day.dateString },
+                    });
                 }}
             />
         </View>
