@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link } from "expo-router";
 import { useSearchParams } from "expo-router/build/hooks";
 import { useRef, useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Button, Pressable, Text, TextInput, View } from "react-native";
 
 export default function Home() {
     const searchParams = useSearchParams();
@@ -38,47 +38,52 @@ export default function Home() {
     };
 
     return (
-        <View
+        <Pressable
             style={{
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
                 gap: 10,
             }}
+            onPress={() => {
+                if (isSubmissionOpen) setSubmissionOpen(false)
+            }}
+        
+            // pressable on default make a sound, disable if submission window not open
+            android_disableSound={(isSubmissionOpen) ? false : true}
         >
-            <Text style={{ fontSize: 30 }}>
-                {!isEmpty ? selectedDay : currentDay}
-            </Text>
-            <TodoList
-                date={!isEmpty ? selectedDay : currentDay}
-                todoData={todoData}
-                setTodoData={setTodoData}
-            ></TodoList>
-            <Link href="/calendar">Calendar</Link>
-
-            <Button
-                title={!isSubmissionOpen ? "+" : "-"}
-                onPress={() => {
-                    setSubmissionOpen(!isSubmissionOpen);
-                    setText("");
-                }}
-            />
-            {isSubmissionOpen ? (
-                <View>
-                    <TextInput
-                        placeholder="Enter Todo"
-                        value={text}
-                        onChangeText={setText}
-                    ></TextInput>
-                    <Button
-                        title="Submit"
-                        onPress={() => {
-                            addTodo(text);
-                            setText("");
-                        }}
-                    />
-                </View>
-            ) : null}
-        </View>
+                <Text style={{ fontSize: 30 }}>
+                    {!isEmpty ? selectedDay : currentDay}
+                </Text>
+                <TodoList
+                    date={!isEmpty ? selectedDay : currentDay}
+                    todoData={todoData}
+                    setTodoData={setTodoData}
+                ></TodoList>
+                <Button
+                    title={!isSubmissionOpen ? "+" : "-"}
+                    onPress={() => {
+                        setSubmissionOpen(!isSubmissionOpen);
+                        setText("");
+                    }}
+                />
+                {isSubmissionOpen ? (
+                    <View>
+                        <TextInput
+                            placeholder="Enter Todo"
+                            value={text}
+                            onChangeText={setText}
+                        ></TextInput>
+                        <Button
+                            title="Submit"
+                            onPress={() => {
+                                addTodo(text);
+                                setText("");
+                            }}
+                        />
+                    </View>
+                ) : null}
+                <Link style={{margin: 20}} href="/calendar">Calendar</Link>
+        </Pressable>
     );
 }
