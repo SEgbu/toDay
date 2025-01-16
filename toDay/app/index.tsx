@@ -33,7 +33,19 @@ export default function Home() {
     const addTodo = (label: string) => {
         setTodoData((td) => [
             ...td,
-            { id: todoData.length + 1, label: label, completed: false },
+            // initial value is 0
+            // array.reduce goes through an array and return the accumulated value
+            // in this case, we compare whether the current id is great than previous id
+            // if so then replace previous id, if not then continue.
+            {
+                id: td.reduce((prevId, td) => {
+                    console.log(td);
+
+                    return Math.max(prevId, td.id) + 1;
+                }, 1),
+                label: label,
+                completed: false,
+            },
         ]);
     };
 
@@ -46,44 +58,45 @@ export default function Home() {
                 gap: 10,
             }}
             onPress={() => {
-                if (isSubmissionOpen) setSubmissionOpen(false)
+                if (isSubmissionOpen) setSubmissionOpen(false);
             }}
-        
             // pressable on default make a sound, disable if submission window not open
-            android_disableSound={(isSubmissionOpen) ? false : true}
+            android_disableSound={isSubmissionOpen ? false : true}
         >
-                <Text style={{ fontSize: 30 }}>
-                    {!isEmpty ? selectedDay : currentDay}
-                </Text>
-                <TodoList
-                    date={!isEmpty ? selectedDay : currentDay}
-                    todoData={todoData}
-                    setTodoData={setTodoData}
-                ></TodoList>
-                <Button
-                    title={!isSubmissionOpen ? "+" : "-"}
-                    onPress={() => {
-                        setSubmissionOpen(!isSubmissionOpen);
-                        setText("");
-                    }}
-                />
-                {isSubmissionOpen ? (
-                    <View>
-                        <TextInput
-                            placeholder="Enter Todo"
-                            value={text}
-                            onChangeText={setText}
-                        ></TextInput>
-                        <Button
-                            title="Submit"
-                            onPress={() => {
-                                addTodo(text);
-                                setText("");
-                            }}
-                        />
-                    </View>
-                ) : null}
-                <Link style={{margin: 20}} href="/calendar">Calendar</Link>
+            <Text style={{ fontSize: 30 }}>
+                {!isEmpty ? selectedDay : currentDay}
+            </Text>
+            <TodoList
+                date={!isEmpty ? selectedDay : currentDay}
+                todoData={todoData}
+                setTodoData={setTodoData}
+            ></TodoList>
+            <Button
+                title={!isSubmissionOpen ? "+" : "-"}
+                onPress={() => {
+                    setSubmissionOpen(!isSubmissionOpen);
+                    setText("");
+                }}
+            />
+            {isSubmissionOpen ? (
+                <View>
+                    <TextInput
+                        placeholder="Enter Todo"
+                        value={text}
+                        onChangeText={setText}
+                    ></TextInput>
+                    <Button
+                        title="Submit"
+                        onPress={() => {
+                            addTodo(text);
+                            setText("");
+                        }}
+                    />
+                </View>
+            ) : null}
+            <Link style={{ margin: 20 }} href="/calendar">
+                Calendar
+            </Link>
         </Pressable>
     );
 }

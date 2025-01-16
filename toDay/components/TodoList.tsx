@@ -46,6 +46,8 @@ export const TodoList: React.FC<TodoListProps> = ({date, todoData, setTodoData})
 	// store todoData every change 
 	useEffect(() => {
 		const storeData = async () => {
+			console.log(todoData);
+
 			// store todoData at date
 			try {
 				const jsonValue = JSON.stringify(todoData);

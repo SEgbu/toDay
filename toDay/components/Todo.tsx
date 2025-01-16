@@ -1,38 +1,59 @@
-import { Pressable, Text, View } from "react-native";
+import { Button, Pressable, Text, View } from "react-native";
 import Checkbox from "expo-checkbox";
 import { useState } from "react";
 import { TodoType } from "./TodoList";
+import { useLogAsyncStorage } from "@/hooks/useLogAsyncStorage";
 
 type TodoProps = {
-  id: number;
-  label: string;
-  completed: boolean;
-  setTodoData: React.Dispatch<React.SetStateAction<TodoType[]>>;
+    id: number;
+    label: string;
+    completed: boolean;
+    setTodoData: React.Dispatch<React.SetStateAction<TodoType[]>>;
 };
 
 export const Todo: React.FC<TodoProps> = ({
-  label,
-  completed,
-  setTodoData,
-  id,
+    label,
+    completed,
+    setTodoData,
+    id,
 }) => {
-  return (
-    <View style={{ flexDirection: "row", gap: 10 }}>
-        {/* Toggle todos and update todo data */}
-      <Checkbox
-        value={completed}
-        onValueChange={() => {
-          setTodoData((currentTodos) =>
-            currentTodos.map((t) =>
-              t.id === id ? { ...t, completed: !t.completed } : t
-            )
-          );
-        }}
-      ></Checkbox>
-      {/* Strikethrough todo label if todo have been checked */}
-      <Text style={{ textDecorationLine: completed ? "line-through" : "none" }}>
-        {label}
-      </Text>
-    </View>
-  );
+    const [isThreeDotOpen, setThreeDotOpen] = useState<boolean>(false);
+
+    return (
+        <View style={{ flexDirection: "row", gap: 10 }}>
+            {/* Toggle todos and update todo data */}
+            <Checkbox
+                value={completed}
+                onValueChange={() => {
+                    setTodoData((currentTodos) =>
+                        currentTodos.map((t) =>
+                            t.id === id ? { ...t, completed: !t.completed } : t
+                        )
+                    );
+                }}
+            ></Checkbox>
+
+            {/* Strikethrough todo label if todo have been checked */}
+            <Text
+                style={{
+                    textDecorationLine: completed ? "line-through" : "none",
+                }}
+            >
+                {label}
+            </Text>
+
+            {/* Three dot menu */}
+            <Button
+                title="Options"
+                onPress={() => setThreeDotOpen(!isThreeDotOpen)}
+            />
+
+            {isThreeDotOpen ? (
+                <View>
+                    <Button title="Delete" onPress={() => setTodoData(currentTodos => currentTodos.filter(td => td.label != label))}></Button>
+                    <Button title="Rename"></Button>
+                </View>
+            ) : null}
+        </View>
+    );
 };
