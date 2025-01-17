@@ -66,11 +66,13 @@ export default function Home() {
             <Text style={{ fontSize: 30 }}>
                 {!isEmpty ? selectedDay : currentDay}
             </Text>
+
             <TodoList
                 date={!isEmpty ? selectedDay : currentDay}
                 todoData={todoData}
                 setTodoData={setTodoData}
             ></TodoList>
+
             <Button
                 title={!isSubmissionOpen ? "+" : "-"}
                 onPress={() => {
@@ -78,6 +80,7 @@ export default function Home() {
                     setText("");
                 }}
             />
+
             {isSubmissionOpen ? (
                 <View>
                     <TextInput
@@ -94,6 +97,7 @@ export default function Home() {
                     />
                 </View>
             ) : null}
+            
             <Link style={{ margin: 20 }} href="/calendar">
                 Calendar
             </Link>

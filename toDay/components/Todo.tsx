@@ -1,4 +1,4 @@
-import { Button, Pressable, Text, View } from "react-native";
+import { Button, Modal, Pressable, Text, View } from "react-native";
 import Checkbox from "expo-checkbox";
 import { useState } from "react";
 import { TodoType } from "./TodoList";
@@ -18,6 +18,7 @@ export const Todo: React.FC<TodoProps> = ({
     id,
 }) => {
     const [isThreeDotOpen, setThreeDotOpen] = useState<boolean>(false);
+    const [isRenameModalOpen, setRenameModalOpen] = useState<boolean>(false);
 
     return (
         <View style={{ flexDirection: "row", gap: 10 }}>
@@ -51,7 +52,14 @@ export const Todo: React.FC<TodoProps> = ({
             {isThreeDotOpen ? (
                 <View>
                     <Button title="Delete" onPress={() => setTodoData(currentTodos => currentTodos.filter(td => td.label != label))}></Button>
-                    <Button title="Rename"></Button>
+                    <Button title="Rename" onPress={() => setRenameModalOpen(true)}></Button>
+                    <Modal
+                        visible={isRenameModalOpen}
+
+                    >
+                        <Text>Rename Modal</Text>
+                        <Button title="Close" onPress={() => setRenameModalOpen(false)}></Button>
+                    </Modal>
                 </View>
             ) : null}
         </View>
