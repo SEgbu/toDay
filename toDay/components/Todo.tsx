@@ -1,6 +1,6 @@
-import { Button, Modal, Pressable, Text, View } from "react-native";
+import { Button, Modal, Pressable, Text, TextInput, View } from "react-native";
 import Checkbox from "expo-checkbox";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { TodoType } from "./TodoList";
 import { useLogAsyncStorage } from "@/hooks/useLogAsyncStorage";
 
@@ -19,6 +19,7 @@ export const Todo: React.FC<TodoProps> = ({
 }) => {
     const [isThreeDotOpen, setThreeDotOpen] = useState<boolean>(false);
     const [isRenameModalOpen, setRenameModalOpen] = useState<boolean>(false);
+    const [newName, setNewName] = useState<string>("");
 
     return (
         <View style={{ flexDirection: "row", gap: 10 }}>
@@ -49,15 +50,25 @@ export const Todo: React.FC<TodoProps> = ({
                 onPress={() => setThreeDotOpen(!isThreeDotOpen)}
             />
 
+            {/* Three Dot Menu */}
             {isThreeDotOpen ? (
                 <View>
                     <Button title="Delete" onPress={() => setTodoData(currentTodos => currentTodos.filter(td => td.label != label))}></Button>
-                    <Button title="Rename" onPress={() => setRenameModalOpen(true)}></Button>
+                    <Button title="Rename" onPress={() => {
+                        setRenameModalOpen(true)
+                        setNewName(label)
+                    }}></Button>
+                    
+                    {/* Rename Modal */}
                     <Modal
                         visible={isRenameModalOpen}
-
                     >
-                        <Text>Rename Modal</Text>
+                        <Text>Enter New Name: </Text>
+                        <TextInput value={newName} onChangeText={setNewName}></TextInput>
+                        <Button title="Submit" onPress={() => {
+                            setTodoData(currentTodos => currentTodos.map(todo => todo.id === id ? {...todo, label: newName} : todo))
+                            setRenameModalOpen(false);
+                        }}/>
                         <Button title="Close" onPress={() => setRenameModalOpen(false)}></Button>
                     </Modal>
                 </View>
