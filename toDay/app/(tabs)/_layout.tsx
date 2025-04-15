@@ -5,7 +5,6 @@ export default function RootLayout() {
 	<Tabs>
 		<Tabs.Screen name="calendar"/>
 		<Tabs.Screen name="index"/>
-		<Tabs.Screen name="statistics"/>
 	</Tabs>
   )
 }
