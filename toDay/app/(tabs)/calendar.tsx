@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { DimensionValue, Text, View } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { router } from "expo-router";
 
@@ -14,6 +14,8 @@ export default function CalendarPage() {
                         params: { dateNav: day.dateString },
                     });
                 }}
+                
+                
             />
         </View>
     );
