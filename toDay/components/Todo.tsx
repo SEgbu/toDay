@@ -21,6 +21,7 @@ export const Todo: React.FC<TodoProps> = ({
     const [isThreeDotOpen, setThreeDotOpen] = useState<boolean>(false);
     const [isRenameModalOpen, setRenameModalOpen] = useState<boolean>(false);
     const [newName, setNewName] = useState<string>("");
+    const [newDescription, setNewDescription] = useState<string>("");
 
     return (
         <View style={{ flexDirection: "row", gap: 10 }}>
@@ -68,6 +69,7 @@ export const Todo: React.FC<TodoProps> = ({
                     <Button title="Rename" onPress={() => {
                         setRenameModalOpen(true)
                         setNewName(label)
+                        setNewDescription(description)
                     }}></Button>
                     
                     {/* Rename Modal */}
@@ -76,10 +78,14 @@ export const Todo: React.FC<TodoProps> = ({
                     >
                         <Text>Enter New Name: </Text>
                         <TextInput value={newName} onChangeText={setNewName}></TextInput>
+                        <Text>Change/Add a description: </Text>
+                        <TextInput value={newDescription} onChangeText={setNewDescription}></TextInput>
                         <Button title="Submit" onPress={() => {
                             setTodoData(currentTodos => currentTodos.map(todo => todo.id === id ? {...todo, label: newName} : todo))
+                            setTodoData(currentTodos => currentTodos.map(todo => todo.id === id ? {...todo, description: newDescription} : todo))
                             setRenameModalOpen(false);
                         }}/>
+
                         <Button title="Close" onPress={() => setRenameModalOpen(false)}></Button>
                     </Modal>
                 </View>
