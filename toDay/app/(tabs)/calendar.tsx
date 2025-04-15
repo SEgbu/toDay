@@ -10,7 +10,7 @@ export default function CalendarPage() {
                 onDayPress={(day : any) => {
                     // Navigate with selected date
                     router.navigate({
-                        pathname: "/",
+                        pathname: "/(tabs)",
                         params: { dateNav: day.dateString },
                     });
                 }}

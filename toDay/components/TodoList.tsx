@@ -3,10 +3,12 @@ import { Text, View } from "react-native";
 import { Todo } from "./Todo";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLogAsyncStorage } from "@/hooks/useLogAsyncStorage";
+import { useFocusEffect } from "expo-router";
 
 export type TodoType = {
     id: number;
     label: string;
+	description: string;
     completed: boolean;
 };
 
@@ -27,10 +29,11 @@ export const TodoList: React.FC<TodoListProps> = ({date, todoData, setTodoData})
 		const getData = async () => {
 			try {
 				const jsonValue = await AsyncStorage.getItem(date);
+				setTodoData([]);
 				
 				// make object format into array format
+				console.log(date+" data: ", JSON.parse(jsonValue == null ? "[]": jsonValue));
 				if (jsonValue != null){
-					console.log("This day's data: ", JSON.parse(jsonValue));
 					setTodoData(JSON.parse(jsonValue) as (TodoType[]))
 					
 				}
@@ -40,14 +43,12 @@ export const TodoList: React.FC<TodoListProps> = ({date, todoData, setTodoData})
 			}
 		};
 		getData();
-	}, [])
+	}, [date])
 
 
 	// store todoData every change 
 	useEffect(() => {
 		const storeData = async () => {
-			console.log(todoData);
-
 			// store todoData at date
 			try {
 				const jsonValue = JSON.stringify(todoData);
@@ -78,6 +79,7 @@ export const TodoList: React.FC<TodoListProps> = ({date, todoData, setTodoData})
                         key={t.id}
                         id={t.id}
                         label={t.label}
+						description={t.description}
                         completed={t.completed}
                         setTodoData={setTodoData}
                     />

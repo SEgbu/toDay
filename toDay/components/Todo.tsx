@@ -2,11 +2,11 @@ import { Button, Modal, Pressable, Text, TextInput, View } from "react-native";
 import Checkbox from "expo-checkbox";
 import { useRef, useState } from "react";
 import { TodoType } from "./TodoList";
-import { useLogAsyncStorage } from "@/hooks/useLogAsyncStorage";
 
 type TodoProps = {
     id: number;
     label: string;
+    description: string;
     completed: boolean;
     setTodoData: React.Dispatch<React.SetStateAction<TodoType[]>>;
 };
@@ -14,6 +14,7 @@ type TodoProps = {
 export const Todo: React.FC<TodoProps> = ({
     label,
     completed,
+    description,
     setTodoData,
     id,
 }) => {
@@ -43,6 +44,16 @@ export const Todo: React.FC<TodoProps> = ({
             >
                 {label}
             </Text>
+
+            {description != "" ? 
+                <Text
+                style={{
+                    textDecorationLine: completed ? "line-through" : "none",
+                }}
+            >
+                {description}
+            </Text>
+            : null}
 
             {/* Three dot menu */}
             <Button
