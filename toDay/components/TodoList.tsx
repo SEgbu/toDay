@@ -89,7 +89,8 @@ export const TodoList: React.FC<TodoListProps> = ({
         return (
             <Pressable
                 style={{
-                    height: 80,
+                    height: 50,
+                    width: 200,
                     backgroundColor: isActive ? "#ddd" : "white",
                     alignItems: "center",
                     justifyContent: "center",
@@ -120,23 +121,27 @@ export const TodoList: React.FC<TodoListProps> = ({
                     })}
                 </View>
             ) : (
-                    <DraggableFlatList
-                        data={todoData}
-                        renderItem={renderItem}
-                        keyExtractor={(td) => td.id.toString()}
-                        onDragEnd={({data}) => setTodoData(data)}
+                    <View>
+                        <DraggableFlatList
+                            data={todoData}
+                            renderItem={renderItem}
+                            keyExtractor={(td) => td.id.toString()}
+                            onDragEnd={({data}) => setTodoData(data)}
                         
-                        containerStyle={{height:400}}
-                    />
+                            containerStyle={{height:200}}
+                        />
+                    </View>
 
             )}
 
-            {todoData.length > 1 ? (
-                <Button
-                    title={reorderState ? "Stop Reorder" : "Reorder"}
-                    onPress={() => setReorderState(!reorderState)}
-                ></Button>
-            ) : null}
+            <View style={{width: 100}}>
+                {todoData.length > 1 ? (
+                    <Button
+                        title={reorderState ? "Stop Reorder" : "Reorder"}
+                        onPress={() => setReorderState(!reorderState)}
+                    ></Button>
+                ) : null}
+            </View>
         </View>
     );
 };
