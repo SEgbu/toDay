@@ -97,12 +97,13 @@ export const TodoList: React.FC<TodoListProps> = ({
                 onLongPress={drag}
             >
                 <Text>{item.label}</Text>
+                <Text>{item.description.length > 10 ? item.description.substring(0, 10) + "..." : item.description}</Text>
             </Pressable>
         );
     };
 
     return (
-        <View style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <View style={{ display: "flex", flexDirection: "column", gap: 10, paddingLeft: 50}}>
             {!reorderState ? (
                 <View>
                     {todoData.map((t) => {

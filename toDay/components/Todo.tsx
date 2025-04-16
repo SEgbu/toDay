@@ -22,71 +22,104 @@ export const Todo: React.FC<TodoProps> = ({
     const [isRenameModalOpen, setRenameModalOpen] = useState<boolean>(false);
     const [newName, setNewName] = useState<string>("");
     const [newDescription, setNewDescription] = useState<string>("");
+    const [seeMore, setSeeMore] = useState<boolean>(false);
 
     return (
-        <View style={{ flexDirection: "row", gap: 10 }}>
-            {/* Toggle todos and update todo data */}
-            <Checkbox
-                value={completed}
-                onValueChange={() => {
-                    setTodoData((currentTodos) =>
-                        currentTodos.map((t) =>
-                            t.id === id ? { ...t, completed: !t.completed } : t
-                        )
-                    );
-                }}
-            ></Checkbox>
-
-            {/* Strikethrough todo label if todo have been checked */}
-            <Text
-                style={{
-                    textDecorationLine: completed ? "line-through" : "none",
-                }}
-            >
-                {label}
-            </Text>
-
-            {description != "" ? 
+        <View style={{ maxWidth: 100, flexDirection: "row", gap: 10, alignItems: "center", justifyContent: "flex-start" }}>
+                {/* Toggle todos and update todo data */}
+                <Checkbox
+                    value={completed}
+                    onValueChange={() => {
+                        setTodoData((currentTodos) =>
+                            currentTodos.map((t) =>
+                                t.id === id ? { ...t, completed: !t.completed } : t
+                            )
+                        );
+                    }}
+                ></Checkbox>
+                {/* Strikethrough todo label if todo have been checked */}
                 <Text
-                style={{
-                    textDecorationLine: completed ? "line-through" : "none",
-                }}
-            >
-                {description}
-            </Text>
-            : null}
+                    style={{
+                        textDecorationLine: completed ? "line-through" : "none",
+                    }}
+                    onPress={() => setSeeMore(!seeMore)}
+                >
+                    {label}
+                    {"\n"}
+                    {description != ""
+                        ? description.length > 20 && !seeMore
+                            ? description.substring(0, 20) + "..."
+                            : description
+                        : null}
+                </Text>
+         
 
-            {/* Three dot menu */}
+            {/* Option menu button */}
             <Button
-                title="Options"
+                title={!isThreeDotOpen ? "Options" : "Close"}
                 onPress={() => setThreeDotOpen(!isThreeDotOpen)}
             />
 
-            {/* Three Dot Menu */}
+            {/* Option Menu */}
             {isThreeDotOpen ? (
                 <View>
-                    <Button title="Delete" onPress={() => setTodoData(currentTodos => currentTodos.filter(td => td.label != label))}></Button>
-                    <Button title="Rename" onPress={() => {
-                        setRenameModalOpen(true)
-                        setNewName(label)
-                        setNewDescription(description)
-                    }}></Button>
-                    
-                    {/* Rename Modal */}
-                    <Modal
-                        visible={isRenameModalOpen}
-                    >
-                        <Text>Enter New Name: </Text>
-                        <TextInput value={newName} onChangeText={setNewName}></TextInput>
-                        <Text>Change/Add a description: </Text>
-                        <TextInput value={newDescription} onChangeText={setNewDescription}></TextInput>
-                        <Button title="Submit" onPress={() => {
-                            setTodoData(currentTodos => currentTodos.map(todo => todo.id === id ? {...todo, label: newName} : todo))
-                            setTodoData(currentTodos => currentTodos.map(todo => todo.id === id ? {...todo, description: newDescription} : todo))
-                            setRenameModalOpen(false);
-                        }}/>
+                    <Button
+                        title="Delete"
+                        onPress={() =>
+                            setTodoData((currentTodos) =>
+                                currentTodos.filter((td) => td.label != label)
+                            )
+                        }
+                    ></Button>
+                    <Button
+                        title="Rename"
+                        onPress={() => {
+                            setRenameModalOpen(true);
+                            setNewName(label);
+                            setNewDescription(description);
+                        }}
+                    ></Button>
 
-                        <Button title="Close" onPress={() => setRenameModalOpen(false)}></Button>
+                    {/* Rename Modal */}
+                    <Modal visible={isRenameModalOpen}>
+                        <Text>Enter New Name: </Text>
+                        <TextInput
+                            value={newName}
+                            onChangeText={setNewName}
+                        ></TextInput>
+                        <Text>Change/Add a description: </Text>
+                        <TextInput
+                            value={newDescription}
+                            onChangeText={setNewDescription}
+                        ></TextInput>
+                        <Button
+                            title="Submit"
+                            onPress={() => {
+                                setTodoData((currentTodos) =>
+                                    currentTodos.map((todo) =>
+                                        todo.id === id
+                                            ? { ...todo, label: newName }
+                                            : todo
+                                    )
+                                );
+                                setTodoData((currentTodos) =>
+                                    currentTodos.map((todo) =>
+                                        todo.id === id
+                                            ? {
+                                                  ...todo,
+                                                  description: newDescription,
+                                              }
+                                            : todo
+                                    )
+                                );
+                                setRenameModalOpen(false);
+                            }}
+                        />
+
+                        <Button
+                            title="Close"
+                            onPress={() => setRenameModalOpen(false)}
+                        ></Button>
                     </Modal>
                 </View>
             ) : null}

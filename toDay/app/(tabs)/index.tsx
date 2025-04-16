@@ -56,14 +56,13 @@ export default function Home() {
 
     const clearAllTodos = () => {
         setTodoData([]);
-    }
+    };
 
     return (
         <Pressable
             style={{
                 flex: 1,
                 justifyContent: "center",
-                alignItems: "center",
                 gap: 10,
             }}
             onPress={() => {
@@ -72,7 +71,7 @@ export default function Home() {
             // pressable on default make a sound, disable if submission window not open
             android_disableSound={isSubmissionOpen ? false : true}
         >
-            <Text style={{ fontSize: 30 }}>
+            <Text style={{ fontSize: 30, textAlign: "center" }}>
                 {!isEmpty ? selectedDay : currentDay}
             </Text>
 
@@ -82,53 +81,62 @@ export default function Home() {
                 setTodoData={setTodoData}
             ></TodoList>
 
-            <Button
-                title={!isSubmissionOpen ? "+" : "-"}
-                onPress={() => {
-                    setSubmissionOpen(!isSubmissionOpen);
-                    setText("");
+            <View
+                style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 10,
                 }}
-            />
-
-            {isSubmissionOpen ? (
-                <View>
-                    <TextInput
-                        placeholder="Enter Todo"
-                        value={text}
-                        onChangeText={setText}
-                    ></TextInput>
-                    <Button
-                        title={
-                            !isDescriptionsOpen
-                                ? "Add Description"
-                                : "Close Description"
-                        }
-                        onPress={() => {
-                            setDescriptionOpen(!isDescriptionsOpen);
-                            setDescription("");
-                        }}
-                    ></Button>
-                    {isDescriptionsOpen ? (
+            >
+                <Button
+                    title={!isSubmissionOpen ? "+" : "-"}
+                    onPress={() => {
+                        setSubmissionOpen(!isSubmissionOpen);
+                        setText("");
+                    }}
+                />
+                {isSubmissionOpen ? (
+                    <View>
                         <TextInput
-                            placeholder="Enter Description"
-                            value={description}
-                            onChangeText={setDescription}
+                            placeholder="Enter Todo"
+                            value={text}
+                            onChangeText={setText}
                         ></TextInput>
-                    ) : null}
-                    <Button
-                        title="Submit"
-                        onPress={() => {
-                            if (text.length > 0){
-                                addTodo(text, description);
-                                setText("");
-                                setDescription("");
+                        <Button
+                            title={
+                                !isDescriptionsOpen
+                                    ? "Add Description"
+                                    : "Close Description"
                             }
-                        }}
-                    />
-                </View>
-            ) : null}
-
-            <Button title={"Clear All"} onPress={() => clearAllTodos()}></Button>
+                            onPress={() => {
+                                setDescriptionOpen(!isDescriptionsOpen);
+                                setDescription("");
+                            }}
+                        ></Button>
+                        {isDescriptionsOpen ? (
+                            <TextInput
+                                placeholder="Enter Description"
+                                value={description}
+                                onChangeText={setDescription}
+                            ></TextInput>
+                        ) : null}
+                        <Button
+                            title="Submit"
+                            onPress={() => {
+                                if (text.length > 0) {
+                                    addTodo(text, description);
+                                    setText("");
+                                    setDescription("");
+                                }
+                            }}
+                        />
+                    </View>
+                ) : null}
+                <Button
+                    title={"Clear All"}
+                    onPress={() => clearAllTodos()}
+                ></Button>
+            </View>
         </Pressable>
     );
 }
