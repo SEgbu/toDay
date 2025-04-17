@@ -26,7 +26,7 @@ export const Todo: React.FC<TodoProps> = ({
     const [seeMore, setSeeMore] = useState<boolean>(false);
 
     return (
-        <View style={{ maxWidth: 100, flexDirection: "row", gap: 10, alignItems: "center", justifyContent: "flex-start" }}>
+        <View style={{ width: 300, flexDirection: "row", gap: 20, alignItems: "center", justifyContent: "space-around" }}>
                 {/* Toggle todos and update todo data */}
                 <Checkbox
                     value={completed}
@@ -41,15 +41,16 @@ export const Todo: React.FC<TodoProps> = ({
                 {/* Strikethrough todo label if todo have been checked */}
                 <Text
                     style={{
-                        textDecorationLine: completed ? "line-through" : "none",
+                        textDecorationLine: completed ? "line-through" : "none", 
+                        maxWidth: 100,
                     }}
                     onPress={() => setSeeMore(!seeMore)}
                 >
                     {label}
                     {"\n"}
                     {description != "" && description != undefined
-                        ? description.length > 20 && !seeMore
-                            ? description.substring(0, 20) + "..."
+                        ? description.length > 8 && !seeMore
+                            ? description.substring(0, 8) + "..."
                             : description
                         : null}
                 </Text>
@@ -62,7 +63,7 @@ export const Todo: React.FC<TodoProps> = ({
 
             {/* Option Menu */}
             {isThreeDotOpen ? (
-                <View>
+                <View style={{maxWidth: 100}}>
                     <Button
                         title="Delete"
                         onPress={() =>

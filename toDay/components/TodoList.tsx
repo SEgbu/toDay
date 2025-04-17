@@ -105,9 +105,9 @@ export const TodoList: React.FC<TodoListProps> = ({
     };
 
     return (
-        <View style={{ display: "flex", flexDirection: "column", gap: 10, paddingLeft: 50, width: 400}}>
+        <View style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "center", width: 400}}>
             {!reorderState ? (
-                <ScrollView style={{maxHeight: 300, overflow: "scroll"}}>
+                <ScrollView style={{maxHeight: 150, overflow: "scroll"}}>
                     {todoData.map((t) => {
                         return (
                             <Todo
