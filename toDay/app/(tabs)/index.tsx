@@ -1,11 +1,8 @@
 import { TodoList, TodoType } from "@/components/TodoList";
 import { useCurrentDate } from "@/hooks/useCurrentDate";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link, router } from "expo-router";
 import { useSearchParams } from "expo-router/build/hooks";
 import { useRef, useState } from "react";
 import { Button, Pressable, Text, TextInput, View } from "react-native";
-import { useEffect } from "react";
 
 export default function Home() {
     const searchParams = useSearchParams();
@@ -39,10 +36,7 @@ export default function Home() {
         setTodoData((td) => [
             ...td,
             {
-                // initial value is 0
-                // array.reduce goes through an array and return the accumulated value
-                // in this case, we compare whether the current id is great than previous id
-                // if so then replace previous id, if not then continue.
+
                 id:
                     td.length > 0
                         ? Math.max(...td.map((todo) => todo.id)) + 1

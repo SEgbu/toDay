@@ -2,6 +2,7 @@ import { Button, Modal, Pressable, Text, TextInput, View } from "react-native";
 import Checkbox from "expo-checkbox";
 import { useRef, useState } from "react";
 import { TodoType } from "./TodoList";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type TodoProps = {
     id: number;
@@ -46,13 +47,12 @@ export const Todo: React.FC<TodoProps> = ({
                 >
                     {label}
                     {"\n"}
-                    {description != ""
+                    {description != "" && description != undefined
                         ? description.length > 20 && !seeMore
                             ? description.substring(0, 20) + "..."
                             : description
                         : null}
                 </Text>
-         
 
             {/* Option menu button */}
             <Button

@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import DraggableFlatList, {
     RenderItemParams,
 } from "react-native-draggable-flatlist";
+import { ScrollView } from "react-native-gesture-handler";
 
 export type TodoType = {
     id: number;
@@ -104,9 +105,9 @@ export const TodoList: React.FC<TodoListProps> = ({
     };
 
     return (
-        <View style={{ display: "flex", flexDirection: "column", gap: 10, paddingLeft: 50}}>
+        <View style={{ display: "flex", flexDirection: "column", gap: 10, paddingLeft: 50, width: 400}}>
             {!reorderState ? (
-                <View>
+                <ScrollView style={{maxHeight: 300, overflow: "scroll"}}>
                     {todoData.map((t) => {
                         return (
                             <Todo
@@ -119,7 +120,7 @@ export const TodoList: React.FC<TodoListProps> = ({
                             />
                         );
                     })}
-                </View>
+                </ScrollView>
             ) : (
                     <View>
                         <DraggableFlatList
@@ -134,7 +135,7 @@ export const TodoList: React.FC<TodoListProps> = ({
 
             )}
 
-            <View style={{width: 100}}>
+            <View >
                 {todoData.length > 1 ? (
                     <Button
                         title={reorderState ? "Stop Reorder" : "Reorder"}
