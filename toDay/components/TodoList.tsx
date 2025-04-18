@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Pressable, Text, View } from "react-native";
 import { Todo } from "./Todo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -27,8 +27,6 @@ export const TodoList: React.FC<TodoListProps> = ({
 }) => {
     // format: [{ "id": 1, "label": "todo today tada", "completed": false }]
 
-    const [reorderState, setReorderState] = useState<boolean>(false);
-
     // setting todoData to their value once app opens
     useEffect(() => {
         const getData = async () => {
@@ -49,11 +47,6 @@ export const TodoList: React.FC<TodoListProps> = ({
             }
         };
         getData();
-    }, [date]);
-
-    // reorder state is back to false once new day is opened
-    useEffect(() => {
-        setReorderState(false);
     }, [date]);
 
     // store todoData every change
@@ -80,68 +73,51 @@ export const TodoList: React.FC<TodoListProps> = ({
         };
         storeData();
     }, [todoData]);
+    
+
+
 
     // dragging functionality
-    const renderItem = ({
-        item,
-        drag,
-        isActive,
-    }: RenderItemParams<TodoType>) => {
+    const renderItem = ({ item, drag }: RenderItemParams<TodoType>) => {
         return (
             <Pressable
                 style={{
-                    height: 50,
-                    width: 200,
-                    backgroundColor: isActive ? "#ddd" : "white",
                     alignItems: "center",
                     justifyContent: "center",
                 }}
                 onLongPress={drag}
             >
-                <Text>{item.label}</Text>
-                <Text>{item.description.length > 10 ? item.description.substring(0, 10) + "..." : item.description}</Text>
+                <Todo
+                    key={item.id}
+                    id={item.id}
+                    label={item.label}
+                    description={item.description}
+                    completed={item.completed}
+                    setTodoData={setTodoData}
+                />
             </Pressable>
         );
     };
 
     return (
-        <View style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "center", width: 400}}>
-            {!reorderState ? (
-                <ScrollView style={{maxHeight: 150, overflow: "scroll"}}>
-                    {todoData.map((t) => {
-                        return (
-                            <Todo
-                                key={t.id}
-                                id={t.id}
-                                label={t.label}
-                                description={t.description}
-                                completed={t.completed}
-                                setTodoData={setTodoData}
-                            />
-                        );
-                    })}
-                </ScrollView>
-            ) : (
-                    <View>
-                        <DraggableFlatList
-                            data={todoData}
-                            renderItem={renderItem}
-                            keyExtractor={(td) => td.id.toString()}
-                            onDragEnd={({data}) => setTodoData(data)}
-                        
-                            containerStyle={{height:200}}
-                        />
-                    </View>
+        <View
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+                alignItems: "center",
+                width: 400,
+            }}
+        >
+            <View>
+                <DraggableFlatList
+                    data={todoData}
+                    renderItem={renderItem}
+                    keyExtractor={(td) => td.id.toString()}
+                    onDragEnd={({ data }) => setTodoData(data)}
+                    containerStyle={{ maxHeight: 200 }}
+                />
 
-            )}
-
-            <View >
-                {todoData.length > 1 ? (
-                    <Button
-                        title={reorderState ? "Stop Reorder" : "Reorder"}
-                        onPress={() => setReorderState(!reorderState)}
-                    ></Button>
-                ) : null}
             </View>
         </View>
     );
