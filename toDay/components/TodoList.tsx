@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Pressable, Text, View } from "react-native";
 import { Todo } from "./Todo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DraggableFlatList, {
     RenderItemParams,
+    ScaleDecorator
 } from "react-native-draggable-flatlist";
-import { ScrollView } from "react-native-gesture-handler";
 
 export type TodoType = {
     id: number;
@@ -78,26 +78,28 @@ export const TodoList: React.FC<TodoListProps> = ({
 
 
     // dragging functionality
-    const renderItem = ({ item, drag }: RenderItemParams<TodoType>) => {
+    const renderItem = useCallback(({ item, drag }: RenderItemParams<TodoType>) => {
         return (
-            <Pressable
-                style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-                onLongPress={drag}
-            >
-                <Todo
-                    key={item.id}
-                    id={item.id}
-                    label={item.label}
-                    description={item.description}
-                    completed={item.completed}
-                    setTodoData={setTodoData}
-                />
-            </Pressable>
+            <ScaleDecorator>
+                <Pressable
+                    style={{
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                    onLongPress={drag}
+                >
+                    <Todo
+                        key={item.id}
+                        id={item.id}
+                        label={item.label}
+                        description={item.description}
+                        completed={item.completed}
+                        setTodoData={setTodoData}
+                    />
+                </Pressable>
+            </ScaleDecorator>
         );
-    };
+    }, []);
 
     return (
         <View
@@ -116,6 +118,7 @@ export const TodoList: React.FC<TodoListProps> = ({
                     keyExtractor={(td) => td.id.toString()}
                     onDragEnd={({ data }) => setTodoData(data)}
                     containerStyle={{ maxHeight: 200 }}
+                    autoscrollThreshold={1}
                 />
 
             </View>
