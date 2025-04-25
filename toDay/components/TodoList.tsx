@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button, Pressable, Text, View } from "react-native";
+import { Button, Pressable, Text, TouchableOpacity, View } from "react-native";
 import { Todo } from "./Todo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DraggableFlatList, {
     RenderItemParams,
-    ScaleDecorator
+    ScaleDecorator,
 } from "react-native-draggable-flatlist";
 
 export type TodoType = {
@@ -73,33 +73,40 @@ export const TodoList: React.FC<TodoListProps> = ({
         };
         storeData();
     }, [todoData]);
-    
-
-
 
     // dragging functionality
-    const renderItem = useCallback(({ item, drag }: RenderItemParams<TodoType>) => {
-        return (
-            <ScaleDecorator>
-                <Pressable
-                    style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                    onLongPress={drag}
-                >
-                    <Todo
-                        key={item.id}
-                        id={item.id}
-                        label={item.label}
-                        description={item.description}
-                        completed={item.completed}
-                        setTodoData={setTodoData}
-                    />
-                </Pressable>
-            </ScaleDecorator>
-        );
-    }, []);
+    const renderItem = useCallback(
+        ({ item, drag }: RenderItemParams<TodoType>) => {
+            
+            return (
+                    <ScaleDecorator>
+                        <Pressable
+                            style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                            onLongPress={() => {
+                                drag()
+                            }}
+                        >
+                            <Todo
+                                key={item.id}
+                                id={item.id}
+                                label={item.label}
+                                description={item.description}
+                                completed={item.completed}
+                                setTodoData={setTodoData}
+                            />
+                        </Pressable>
+                    </ScaleDecorator>
+            );
+        },
+        []
+    );
+
+    const updateTodosOnDragEnd = (data : TodoType[]) => {
+        setTodoData(data);
+    }
 
     return (
         <View
@@ -116,11 +123,14 @@ export const TodoList: React.FC<TodoListProps> = ({
                     data={todoData}
                     renderItem={renderItem}
                     keyExtractor={(td) => td.id.toString()}
-                    onDragEnd={({ data }) => setTodoData(data)}
+                    onDragEnd={({ data, }) => updateTodosOnDragEnd(data)}
                     containerStyle={{ maxHeight: 200 }}
-                    autoscrollThreshold={1}
+                    autoscrollThreshold={30}
+                    animationConfig={{
+                        duration: 1000,
+                        dampingRatio: 0.5,
+                    }}
                 />
-
             </View>
         </View>
     );
