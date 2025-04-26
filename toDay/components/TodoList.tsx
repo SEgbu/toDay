@@ -2,10 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Pressable, Text, TouchableOpacity, View } from "react-native";
 import { Todo } from "./Todo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import DraggableFlatList, {
+import {
     RenderItemParams,
     ScaleDecorator,
 } from "react-native-draggable-flatlist";
+import DragList, { DragListRenderItemInfo } from "react-native-draglist" 
 
 export type TodoType = {
     id: number;
@@ -76,7 +77,7 @@ export const TodoList: React.FC<TodoListProps> = ({
 
     // dragging functionality
     const renderItem = useCallback(
-        ({ item, drag }: RenderItemParams<TodoType>) => {
+        ({ item, onDragEnd, onDragStart }: DragListRenderItemInfo<TodoType>) => {
             
             return (
                     <ScaleDecorator>
@@ -85,9 +86,8 @@ export const TodoList: React.FC<TodoListProps> = ({
                                 alignItems: "center",
                                 justifyContent: "center",
                             }}
-                            onLongPress={() => {
-                                drag()
-                            }}
+                            onPressIn={onDragStart}
+                            onPressOut={onDragEnd}
                         >
                             <Todo
                                 key={item.id}
@@ -104,6 +104,14 @@ export const TodoList: React.FC<TodoListProps> = ({
         []
     );
 
+    const onReordered = (fromIndex: number, toIndex: number) => {
+        const copy = [...todoData]; // Don't modify react data in-place
+        const removed = copy.splice(fromIndex, 1);
+    
+        copy.splice(toIndex, 0, removed[0]); // Now insert at the new pos
+        setTodoData(copy);
+    }
+
     const updateTodosOnDragEnd = (data : TodoType[]) => {
         setTodoData(data);
     }
@@ -119,17 +127,12 @@ export const TodoList: React.FC<TodoListProps> = ({
             }}
         >
             <View>
-                <DraggableFlatList
+                <DragList
                     data={todoData}
                     renderItem={renderItem}
                     keyExtractor={(td) => td.id.toString()}
-                    onDragEnd={({ data, }) => updateTodosOnDragEnd(data)}
+                    onReordered={onReordered}
                     containerStyle={{ maxHeight: 200 }}
-                    autoscrollThreshold={30}
-                    animationConfig={{
-                        duration: 1000,
-                        dampingRatio: 0.5,
-                    }}
                 />
             </View>
         </View>
