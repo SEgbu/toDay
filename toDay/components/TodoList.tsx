@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button, Pressable, Text, TouchableOpacity, View } from "react-native";
+import { Button, ListRenderItemInfo, Pressable, Text, TouchableOpacity, View } from "react-native";
 import { Todo } from "./Todo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import DraggableFlatList, {
-    RenderItemParams,
-    ScaleDecorator,
-} from "react-native-draggable-flatlist";
+import ReorderableList, { ReorderableListReorderEvent, reorderItems } from "react-native-reorderable-list";
+
 
 export type TodoType = {
     id: number;
@@ -74,31 +72,23 @@ export const TodoList: React.FC<TodoListProps> = ({
         storeData();
     }, [todoData]);
 
+    const handleReorder = ({from, to}: ReorderableListReorderEvent) => {
+        setTodoData(value => reorderItems(value, from, to));
+    };   
+
     // dragging functionality
     const renderItem = useCallback(
-        ({ item, drag }: RenderItemParams<TodoType>) => {
+        ({ item }: ListRenderItemInfo<TodoType>) => {
             
             return (
-                    <ScaleDecorator>
-                        <Pressable
-                            style={{
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                            onLongPress={() => {
-                                drag()
-                            }}
-                        >
-                            <Todo
-                                key={item.id}
-                                id={item.id}
-                                label={item.label}
-                                description={item.description}
-                                completed={item.completed}
-                                setTodoData={setTodoData}
-                            />
-                        </Pressable>
-                    </ScaleDecorator>
+                <Todo
+                    key={item.id}
+                    id={item.id}
+                    label={item.label}
+                    description={item.description}
+                    completed={item.completed}
+                    setTodoData={setTodoData}
+                />
             );
         },
         []
@@ -116,20 +106,16 @@ export const TodoList: React.FC<TodoListProps> = ({
                 gap: 10,
                 alignItems: "center",
                 width: 400,
+                maxHeight: 200
             }}
         >
             <View>
-                <DraggableFlatList
+                <ReorderableList
                     data={todoData}
                     renderItem={renderItem}
                     keyExtractor={(td) => td.id.toString()}
-                    onDragEnd={({ data, }) => updateTodosOnDragEnd(data)}
-                    containerStyle={{ maxHeight: 200 }}
+                    onReorder={handleReorder}
                     autoscrollThreshold={30}
-                    animationConfig={{
-                        duration: 1000,
-                        dampingRatio: 0.5,
-                    }}
                 />
             </View>
         </View>
