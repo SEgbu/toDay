@@ -2,9 +2,7 @@ import { Button, Modal, Pressable, Text, TextInput, View } from "react-native";
 import Checkbox from "expo-checkbox";
 import { useEffect, useRef, useState } from "react";
 import { TodoType } from "./TodoList";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useReorderableDrag } from "react-native-reorderable-list";
-import { PreventRemoveContext } from "@react-navigation/native";
 
 type TodoProps = {
     id: number;
@@ -29,9 +27,10 @@ export const Todo: React.FC<TodoProps> = ({
     const [canDrag, setCanDrag] = useState<boolean>(false);
     const drag = useReorderableDrag();
 
-    useEffect(() => {
-        console.log(id.toString() + ": " + (canDrag ? "True" : "False"));
-    }, [setCanDrag]);
+    // Logging canDrag state
+    // useEffect(() => {
+    //     console.log(id.toString() + ": " + (canDrag ? "True" : "False"));
+    // }, [setCanDrag]);
 
     return (
         <View
@@ -46,14 +45,12 @@ export const Todo: React.FC<TodoProps> = ({
             {/* Drag area */}
             <Pressable
                 onPressIn={() => {
-                    console.log("Press In");
                     drag();
                 }}
                 style={{
                     backgroundColor: "grey",
-                    height: 30
+                    height: 30,
                 }}
-
             >
                 <Text>Drag</Text>
             </Pressable>
@@ -81,11 +78,11 @@ export const Todo: React.FC<TodoProps> = ({
                         ? label.substring(0, 8) + "..."
                         : label
                     : null}
-                {"\n"}
+
                 {description != "" && description != undefined
                     ? description.length > 8 && !seeMore
-                        ? description.substring(0, 8) + "..."
-                        : description
+                        ?  "\n"+description.substring(0, 8) + "..."
+                        : "\n \n"+description
                     : null}
             </Text>
 
@@ -116,45 +113,73 @@ export const Todo: React.FC<TodoProps> = ({
                     ></Button>
 
                     {/* Rename Modal */}
-                    <Modal visible={isRenameModalOpen}>
-                        <Text>Enter New Name: </Text>
-                        <TextInput
-                            value={newName}
-                            onChangeText={setNewName}
-                        ></TextInput>
-                        <Text>Change/Add a description: </Text>
-                        <TextInput
-                            value={newDescription}
-                            onChangeText={setNewDescription}
-                        ></TextInput>
-                        <Button
-                            title="Submit"
-                            onPress={() => {
-                                setTodoData((currentTodos) =>
-                                    currentTodos.map((todo) =>
-                                        todo.id === id
-                                            ? { ...todo, label: newName }
-                                            : todo
-                                    )
-                                );
-                                setTodoData((currentTodos) =>
-                                    currentTodos.map((todo) =>
-                                        todo.id === id
-                                            ? {
-                                                  ...todo,
-                                                  description: newDescription,
-                                              }
-                                            : todo
-                                    )
-                                );
-                                setRenameModalOpen(false);
+                    <Modal
+                        visible={isRenameModalOpen}
+                        transparent={true}
+                        animationType="slide"
+                    >
+                        <View
+                            style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
                             }}
-                        />
+                        >
+                            <View
+                                style={{
+                                    backgroundColor: "white",
+                                    padding: 30,
+                                }}
+                            >
+                                <Text style={{fontWeight: "800", fontSize: 20}}>Rename Todo: {"\n"}</Text>
 
-                        <Button
-                            title="Close"
-                            onPress={() => setRenameModalOpen(false)}
-                        ></Button>
+                                <Text>Enter New Name: </Text>
+                                <TextInput
+                                    value={newName}
+                                    onChangeText={setNewName}
+                                ></TextInput>
+                                <Text>{"\n"}</Text>
+
+                                <Text>Change/Add a description: </Text>
+                                <TextInput
+                                    value={newDescription}
+                                    onChangeText={setNewDescription}
+                                ></TextInput>
+                                <Text>{"\n"}</Text>
+
+                                <Button
+                                    title="Submit"
+                                    onPress={() => {
+                                        setTodoData((currentTodos) =>
+                                            currentTodos.map((todo) =>
+                                                todo.id === id
+                                                    ? {
+                                                          ...todo,
+                                                          label: newName,
+                                                      }
+                                                    : todo
+                                            )
+                                        );
+                                        setTodoData((currentTodos) =>
+                                            currentTodos.map((todo) =>
+                                                todo.id === id
+                                                    ? {
+                                                          ...todo,
+                                                          description:
+                                                              newDescription,
+                                                      }
+                                                    : todo
+                                            )
+                                        );
+                                        setRenameModalOpen(false);
+                                    }}
+                                />
+                                <Button
+                                    title="Close"
+                                    onPress={() => setRenameModalOpen(false)}
+                                ></Button>
+                            </View>
+                        </View>
                     </Modal>
                 </View>
             ) : null}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { Button, ListRenderItemInfo, Pressable, Text, TouchableOpacity, View } from "react-native";
 import { Todo } from "./Todo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -24,13 +24,13 @@ export const TodoList: React.FC<TodoListProps> = ({
     setTodoData,
 }) => {
     // format: [{ "id": 1, "label": "todo today tada", "completed": false }]
-
-    // setting todoData to their value once app opens
+    // setting todoData to their value once app opens or switching date
     useEffect(() => {
         const getData = async () => {
             try {
-                const jsonValue = await AsyncStorage.getItem(date);
+
                 setTodoData([]);
+                const jsonValue = await AsyncStorage.getItem(date);
 
                 // make object format into array format
                 console.log(
@@ -38,6 +38,7 @@ export const TodoList: React.FC<TodoListProps> = ({
                     JSON.parse(jsonValue == null ? "[]" : jsonValue)
                 );
                 if (jsonValue != null) {
+
                     setTodoData(JSON.parse(jsonValue) as TodoType[]);
                 }
             } catch (e) {
@@ -113,9 +114,10 @@ export const TodoList: React.FC<TodoListProps> = ({
                 <ReorderableList
                     data={todoData}
                     renderItem={renderItem}
-                    keyExtractor={(td) => td.id.toString()}
+                    keyExtractor={(td : TodoType) => td.id.toString()}
                     onReorder={handleReorder}
                     autoscrollThreshold={30}
+
                 />
             </View>
         </View>
