@@ -54,20 +54,28 @@ export default function Home() {
 
     return (
         <Pressable
-            style={{
-                flex: 1,
-                justifyContent: "center",
-                gap: 10,
-            }}
-            onPress={() => {
-                if (isSubmissionOpen) setSubmissionOpen(false);
-            }}
-            // pressable on default make a sound, disable if submission window not open
-            android_disableSound={isSubmissionOpen ? false : true}
+        style={{
+            flex: 1,
+            justifyContent: "center",
+            gap: 10,
+        }}
+        onPress={() => {
+            if (isSubmissionOpen) setSubmissionOpen(false);
+        }}
+        // pressable on default make a sound, disable if submission window not open
+        android_disableSound={isSubmissionOpen ? false : true}
         >
             <Text style={{ fontSize: 30, textAlign: "center" }}>
                 {!isEmpty ? selectedDay : currentDay}
             </Text>
+
+            <View style={{display: "flex", alignItems: "center"}}>
+                <Button
+                    title={"Clear All"}
+                    onPress={() => clearAllTodos()}
+                ></Button>
+            </View>
+
 
             <TodoList
                 date={!isEmpty ? selectedDay : currentDay}
@@ -126,10 +134,6 @@ export default function Home() {
                         />
                     </View>
                 ) : null}
-                <Button
-                    title={"Clear All"}
-                    onPress={() => clearAllTodos()}
-                ></Button>
             </View>
         </Pressable>
     );

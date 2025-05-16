@@ -3,6 +3,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 
 export const useTodoData = () => {
+    
+
     const [storage, setStorage] = useState<{[key:string] : TodoType[]}>({});
 
     AsyncStorage.getAllKeys().then((keyArray) => {

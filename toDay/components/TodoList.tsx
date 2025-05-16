@@ -107,7 +107,8 @@ export const TodoList: React.FC<TodoListProps> = ({
                 gap: 10,
                 alignItems: "center",
                 width: 400,
-                maxHeight: 200
+                height: todoData.length == 0 ? 0 : todoData.length * 30 + 100,
+                maxHeight: 200 
             }}
         >
             <View>

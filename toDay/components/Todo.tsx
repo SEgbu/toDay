@@ -35,7 +35,7 @@ export const Todo: React.FC<TodoProps> = ({
     return (
         <View
             style={{
-                width: 300,
+                minWidth: 300,
                 flexDirection: "row",
                 gap: 20,
                 alignItems: "center",
