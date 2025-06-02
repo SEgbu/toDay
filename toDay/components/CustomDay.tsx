@@ -1,17 +1,15 @@
+import { PieSlice } from "@/components/PieSlice";
+import { useCurrentDate } from "@/hooks/useCurrentDate";
+import { useTodoData } from "@/hooks/useTodoData";
+
 import {
-    ColorValue,
-    DimensionValue,
     Pressable,
     Text,
     View,
 } from "react-native";
 import { router } from "expo-router";
-
 import React, { useEffect } from "react";
 import { StyleProp, ViewStyle, TextStyle } from "react-native";
-import { PieSlice } from "@/components/PieSlice";
-import { useCurrentDate } from "@/hooks/useCurrentDate";
-import { useTodoData } from "@/hooks/useTodoData";
 
 interface DayComponentProps {
     date: {
@@ -23,10 +21,11 @@ interface DayComponentProps {
     };
 }
 
+// Styling for each day on the calendar
 export const CustomDay: React.FC<DayComponentProps> = ({ date }) => {
     const currentDate = useCurrentDate();
     const todoData = useTodoData();
-        
+    
     const pieContainerStyle: StyleProp<ViewStyle> = {
         position: "absolute",
         right: date.dateString[8] == "0" ? 4 : 8,
@@ -47,6 +46,7 @@ export const CustomDay: React.FC<DayComponentProps> = ({ date }) => {
                 <PieSlice
                     size={40}
                     color="rgba(44, 172, 65, 0.34)"
+                    // calculates the fraction of the pie based on the percentage of todos completed
                     percentage={
                         todoData[date.dateString] == undefined ||
                         todoData[date.dateString].length < 1
@@ -63,6 +63,8 @@ export const CustomDay: React.FC<DayComponentProps> = ({ date }) => {
                     }
                 />
             </View>
+
+            {/* Text styling of the day on the calendar */}
             <View
                 style={
                     {

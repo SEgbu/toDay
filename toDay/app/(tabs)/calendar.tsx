@@ -1,11 +1,10 @@
-import { ColorValue, DimensionValue, Pressable, Text, View } from "react-native";
-import { Calendar, CalendarProps, DateData } from "react-native-calendars";
-import { router } from "expo-router";
 import { CustomDay } from "@/components/CustomDay";
+
+import { View } from "react-native";
+import { Calendar, DateData } from "react-native-calendars";
+import { router } from "expo-router";
 import { DayProps } from "react-native-calendars/src/calendar/day";
 import { ComponentType } from "react";
-
-
 
 export default function CalendarPage() {
     return (
@@ -18,7 +17,13 @@ export default function CalendarPage() {
                         params: { dateNav: day.dateString },
                     });
                 }}
-                dayComponent={CustomDay as ComponentType<DayProps & { date?: DateData | undefined; }> | undefined}
+                dayComponent={
+                    CustomDay as
+                        | ComponentType<
+                              DayProps & { date?: DateData | undefined }
+                          >
+                        | undefined
+                }
             />
         </View>
     );

@@ -1,9 +1,9 @@
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
-import { Button, ListRenderItemInfo, Pressable, Text, TouchableOpacity, View } from "react-native";
 import { Todo } from "./Todo";
+
+import { useCallback, useEffect } from "react";
+import { ListRenderItemInfo, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ReorderableList, { ReorderableListReorderEvent, reorderItems } from "react-native-reorderable-list";
-
 
 export type TodoType = {
     id: number;
@@ -23,26 +23,24 @@ export const TodoList: React.FC<TodoListProps> = ({
     todoData,
     setTodoData,
 }) => {
-    // format: [{ "id": 1, "label": "todo today tada", "completed": false }]
-    // setting todoData to their value once app opens or switching date
+    // once day is selected, set associated todos
     useEffect(() => {
         const getData = async () => {
             try {
-
                 setTodoData([]);
+
                 const jsonValue = await AsyncStorage.getItem(date);
 
-                // make object format into array format
+                // set to todoData
+                if (jsonValue != null) {
+                    setTodoData(JSON.parse(jsonValue) as TodoType[]);
+                }
                 console.log(
                     date + " data: ",
                     JSON.parse(jsonValue == null ? "[]" : jsonValue)
                 );
-                if (jsonValue != null) {
-
-                    setTodoData(JSON.parse(jsonValue) as TodoType[]);
-                }
-            } catch (e) {
-                console.error(e);
+            } catch (err : any) {
+                throw new Error("Todolist error, issue with getting todoData: " + err);
             }
         };
         getData();
@@ -55,17 +53,17 @@ export const TodoList: React.FC<TodoListProps> = ({
             try {
                 const jsonValue = JSON.stringify(todoData);
                 await AsyncStorage.setItem(date, jsonValue);
-            } catch (e) {
-                console.error(e);
+            } catch (err : any) {
+                throw new Error("Todolist error, issue with updating todos on change: "+ err);
             }
 
             // testing to see if it was stored
             // const getData = async () => {
             // 	try {
-            // 	  const jsonValue = await AsyncStorage.getItem('20/12/2024');
+            // 	  const jsonValue = await AsyncStorage.getItem(date);
             // 	  console.log(jsonValue != null ? JSON.parse(jsonValue) : null);
-            // 	} catch (e) {
-            // 		console.error(e);
+            // 	} catch (err : any) {
+            // 		throw new Error("Todolist testing error, issue with checking todo change: "+ err);
             // 	}
             // };
             // getData();
@@ -95,10 +93,6 @@ export const TodoList: React.FC<TodoListProps> = ({
         []
     );
 
-    const updateTodosOnDragEnd = (data : TodoType[]) => {
-        setTodoData(data);
-    }
-
     return (
         <View
             style={{
@@ -118,7 +112,6 @@ export const TodoList: React.FC<TodoListProps> = ({
                     keyExtractor={(td : TodoType) => td.id.toString()}
                     onReorder={handleReorder}
                     autoscrollThreshold={30}
-
                 />
             </View>
         </View>

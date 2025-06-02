@@ -1,7 +1,8 @@
+import { TodoType } from "./TodoList";
+
 import { Button, Modal, Pressable, Text, TextInput, View } from "react-native";
 import Checkbox from "expo-checkbox";
 import { useEffect, useRef, useState } from "react";
-import { TodoType } from "./TodoList";
 import { useReorderableDrag } from "react-native-reorderable-list";
 
 type TodoProps = {
@@ -54,7 +55,8 @@ export const Todo: React.FC<TodoProps> = ({
             >
                 <Text>Drag</Text>
             </Pressable>
-            {/* Toggle todos and update todo data */}
+
+            {/* Check and uncheck todos and update todo data */}
             <Checkbox
                 value={completed}
                 onValueChange={() => {
@@ -65,26 +67,43 @@ export const Todo: React.FC<TodoProps> = ({
                     );
                 }}
             ></Checkbox>
-            {/* Strikethrough todo label if todo have been checked */}
-            <Text
-                style={{
-                    textDecorationLine: completed ? "line-through" : "none",
-                    maxWidth: 100,
-                }}
-                onPress={() => setSeeMore(!seeMore)}
-            >
-                {label != "" && label != undefined
-                    ? label.length > 8 && !seeMore
-                        ? label.substring(0, 8) + "..."
-                        : label
-                    : null}
 
-                {description != "" && description != undefined
-                    ? description.length > 8 && !seeMore
-                        ?  "\n"+description.substring(0, 8) + "..."
-                        : "\n \n"+description
-                    : null}
-            </Text>
+            {/* Strikethrough todo label if todo have been checked */}
+            <View
+                style={{
+                    display: "flex",
+                    flexDirection: "column",       
+                }}
+            >
+                <Text
+                    style={{
+                        textDecorationLine: completed ? "line-through" : "none",
+                        maxWidth: 100,
+                    }}
+                    onPress={() => setSeeMore(!seeMore)}
+                >
+                    {/* Label (add "..." if they're too long) */}
+                    {label != "" && label != undefined
+                        ? label.length > 40 && !seeMore
+                            ? label.substring(0, 40) + "..."
+                            : label
+                        : null}
+                </Text>
+                <Text
+                    style={{
+                        textDecorationLine: completed ? "line-through" : "none",
+                        maxWidth: 100,
+                    }}
+                    onPress={() => setSeeMore(!seeMore)}
+                    >
+                        {/* Description (add "..." if they're too long) */}
+                        {description != "" && description != undefined
+                            ? description.length > 8 && !seeMore
+                                ?  description.substring(0, 8) + "..."
+                                :  "\n"+description
+                            : null}
+                </Text>
+            </View>
 
             {/* Option menu button */}
             <Button

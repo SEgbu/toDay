@@ -1,30 +1,31 @@
 import { TodoList, TodoType } from "@/components/TodoList";
 import { useCurrentDate } from "@/hooks/useCurrentDate";
+
 import { useSearchParams } from "expo-router/build/hooks";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Button, Pressable, Text, TextInput, View } from "react-native";
 
 export default function Home() {
     const searchParams = useSearchParams();
+
     const [isSubmissionOpen, setSubmissionOpen] = useState<boolean>(false);
     const [isDescriptionsOpen, setDescriptionOpen] = useState<boolean>(false);
-    const [text, setText] = useState<string>("");
+
+    const [label, setLabel] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
     const isEmpty = searchParams.toString().length === 0;
     // console.log("isEmpty: "+isEmpty+" searchParams:"+searchParams.toString());
 
+    // get date
     let selectedDay = "";
     let currentDay = "";
-
-    useCurrentDate();
 
     if (!isEmpty && searchParams)
         selectedDay = searchParams.get("dateNav") || "";
     else currentDay = useCurrentDate();
 
-    // get all todos as a single object
-    // on todo change, change the object state
+    // global todo data
     const [todoData, setTodoData] = useState<TodoType[]>([]);
 
     // logging todoData
@@ -36,7 +37,6 @@ export default function Home() {
         setTodoData((td) => [
             ...td,
             {
-
                 id:
                     td.length > 0
                         ? Math.max(...td.map((todo) => todo.id)) + 1
@@ -54,28 +54,29 @@ export default function Home() {
 
     return (
         <Pressable
-        style={{
-            flex: 1,
-            justifyContent: "center",
-            gap: 10,
-        }}
-        onPress={() => {
-            if (isSubmissionOpen) setSubmissionOpen(false);
-        }}
-        // pressable on default make a sound, disable if submission window not open
-        android_disableSound={isSubmissionOpen ? false : true}
+            style={{
+                flex: 1,
+                justifyContent: "center",
+                gap: 10,
+            }}
+            onPress={() => {
+                if (isSubmissionOpen) setSubmissionOpen(false);
+            }}
+            // pressable on default make a sound, disable if submission window not open
+            android_disableSound={isSubmissionOpen ? false : true}
         >
+            {/* Date */}
             <Text style={{ fontSize: 30, textAlign: "center" }}>
                 {!isEmpty ? selectedDay : currentDay}
             </Text>
 
-            <View style={{display: "flex", alignItems: "center"}}>
+            {/* Clear All Button */}
+            <View style={{ display: "flex", alignItems: "center" }}>
                 <Button
                     title={"Clear All"}
                     onPress={() => clearAllTodos()}
                 ></Button>
             </View>
-
 
             <TodoList
                 date={!isEmpty ? selectedDay : currentDay}
@@ -83,6 +84,7 @@ export default function Home() {
                 setTodoData={setTodoData}
             ></TodoList>
 
+            {/* Todo Submission Section */}
             <View
                 style={{
                     justifyContent: "center",
@@ -94,16 +96,19 @@ export default function Home() {
                     title={!isSubmissionOpen ? "+" : "-"}
                     onPress={() => {
                         setSubmissionOpen(!isSubmissionOpen);
-                        setText("");
+                        setLabel("");
                     }}
                 />
                 {isSubmissionOpen ? (
                     <View>
+                        {/* Todo Label Input */}
                         <TextInput
                             placeholder="Enter Todo"
-                            value={text}
-                            onChangeText={setText}
+                            value={label}
+                            onChangeText={setLabel}
                         ></TextInput>
+
+                        {/* Todo Description Input */}
                         <Button
                             title={
                                 !isDescriptionsOpen
@@ -122,12 +127,14 @@ export default function Home() {
                                 onChangeText={setDescription}
                             ></TextInput>
                         ) : null}
+                        
+                        {/* Submit Button */}
                         <Button
                             title="Submit"
                             onPress={() => {
-                                if (text.length > 0) {
-                                    addTodo(text, description);
-                                    setText("");
+                                if (label.length > 0) {
+                                    addTodo(label, description);
+                                    setLabel("");
                                     setDescription("");
                                 }
                             }}
