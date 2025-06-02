@@ -2,7 +2,7 @@ import { TodoType } from "./TodoList";
 
 import { Button, Modal, Pressable, Text, TextInput, View } from "react-native";
 import Checkbox from "expo-checkbox";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useReorderableDrag } from "react-native-reorderable-list";
 
 type TodoProps = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ColorValue, View } from 'react-native';
+import { ColorValue } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 type PieSliceProps = {
