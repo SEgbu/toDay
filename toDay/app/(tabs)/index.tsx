@@ -3,7 +3,7 @@ import { useCurrentDate } from "@/hooks/useCurrentDate";
 
 import { useSearchParams } from "expo-router/build/hooks";
 import { useState } from "react";
-import { Button, Pressable, Text, TextInput, View } from "react-native";
+import { Button, Modal, Pressable, Text, TextInput, View } from "react-native";
 
 export default function Home() {
     const searchParams = useSearchParams();
@@ -53,17 +53,12 @@ export default function Home() {
     };
 
     return (
-        <Pressable
+        <View
             style={{
                 flex: 1,
                 justifyContent: "center",
                 gap: 10,
             }}
-            onPress={() => {
-                if (isSubmissionOpen) setSubmissionOpen(false);
-            }}
-            // pressable on default make a sound, disable if submission window not open
-            android_disableSound={isSubmissionOpen ? false : true}
         >
             {/* Date */}
             <Text style={{ fontSize: 30, textAlign: "center" }}>
@@ -99,49 +94,98 @@ export default function Home() {
                         setLabel("");
                     }}
                 />
-                {isSubmissionOpen ? (
-                    <View>
-                        {/* Todo Label Input */}
-                        <TextInput
-                            placeholder="Enter Todo"
-                            value={label}
-                            onChangeText={setLabel}
-                        ></TextInput>
+            </View>
 
-                        {/* Todo Description Input */}
-                        <Button
-                            title={
-                                !isDescriptionsOpen
-                                    ? "Add Description"
-                                    : "Close Description"
-                            }
-                            onPress={() => {
-                                setDescriptionOpen(!isDescriptionsOpen);
-                                setDescription("");
+            <View>
+                <Modal
+                    // style={{
+                    //     justifyContent: "center",
+                    //     alignItems: "center",
+                    //     gap: 10,
+                    // }}
+                    visible={isSubmissionOpen}
+                    animationType="fade"
+                    transparent={true}
+                    
+                    onRequestClose={() => setSubmissionOpen(false)}
+
+                >
+                    <View
+                        style={{
+                            flex: 1,
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <View
+                            style={{
+                                backgroundColor: "white",
+                                width: 300,
+                                padding: 30,
+                                display: "flex",
+                                gap: 3,
+                                shadowColor: "#000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 2,
+                                },
+                                shadowOpacity: 0.25,
+                                shadowRadius: 4,
+                                elevation: 5,
                             }}
-                        ></Button>
-                        {isDescriptionsOpen ? (
+                        >
+                            {/* Todo Label Input */}
                             <TextInput
-                                placeholder="Enter Description"
-                                value={description}
-                                onChangeText={setDescription}
+                                placeholder="Enter Todo"
+                                value={label}
+                                onChangeText={setLabel}
                             ></TextInput>
-                        ) : null}
-                        
-                        {/* Submit Button */}
-                        <Button
-                            title="Submit"
-                            onPress={() => {
-                                if (label.length > 0) {
-                                    addTodo(label, description);
+
+                            {/* Todo Description Input */}
+                            <Button
+                                title={
+                                    !isDescriptionsOpen
+                                        ? "Add Description"
+                                        : "Close Description"
+                                }
+                                onPress={() => {
+                                    setDescriptionOpen(!isDescriptionsOpen);
+                                    setDescription("");
+                                }}
+                            ></Button>
+                            {isDescriptionsOpen ? (
+                                <TextInput
+                                    placeholder="Enter Description"
+                                    value={description}
+                                    onChangeText={setDescription}
+                                ></TextInput>
+                            ) : null}
+
+                            {/* Submit Button */}
+                            <Button
+                                title="Submit"
+                                onPress={() => {
+                                    if (label.length > 0) {
+                                        addTodo(label, description);
+                                        setLabel("");
+                                        setDescription("");
+                                        setSubmissionOpen(false);
+                                    }
+                                }}
+                            />
+
+                            <Button
+                                title="Close"
+                                onPress={() => {
                                     setLabel("");
                                     setDescription("");
-                                }
-                            }}
-                        />
+                                    setSubmissionOpen(false);
+                                }}
+                            ></Button>
+                        </View>
                     </View>
-                ) : null}
+                </Modal>
             </View>
-        </Pressable>
+        </View>
     );
 }
