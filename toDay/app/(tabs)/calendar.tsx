@@ -5,6 +5,7 @@ import { Calendar, DateData } from "react-native-calendars";
 import { router } from "expo-router";
 import { DayProps } from "react-native-calendars/src/calendar/day";
 import { ComponentType } from "react";
+import { CustomHeader } from "@/components/CustomHeader";
 
 export default function CalendarPage() {
     return (
@@ -24,6 +25,8 @@ export default function CalendarPage() {
                           >
                         | undefined
                 }
+                customHeader={CustomHeader}
+                style={{height: "100%", display: "flex", justifyContent: "space-evenly"}}
             />
         </View>
     );

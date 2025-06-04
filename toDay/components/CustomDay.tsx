@@ -29,7 +29,7 @@ export const CustomDay: React.FC<DayComponentProps> = ({ date }) => {
     const pieContainerStyle: StyleProp<ViewStyle> = {
         position: "absolute",
         right: date.dateString[8] == "0" ? 4 : 8,
-        top: 10,
+        top: 20,
     };
 
     return (
@@ -72,8 +72,9 @@ export const CustomDay: React.FC<DayComponentProps> = ({ date }) => {
                         justifyContent: "center",
                         alignItems: "center",
                         margin: "20",
+                        height: "40" 
                     } as Object
-                }
+                } 
             >
                 <Text
                     style={{
