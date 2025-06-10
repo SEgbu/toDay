@@ -3,13 +3,7 @@ import { useCurrentDate } from "@/hooks/useCurrentDate";
 
 import { useSearchParams } from "expo-router/build/hooks";
 import { useRef, useState } from "react";
-import {
-    Button,
-    Modal,
-    Text,
-    TextInput,
-    View,
-} from "react-native";
+import { Button, Modal, Text, TextInput, View } from "react-native";
 
 export default function Home() {
     const searchParams = useSearchParams();
@@ -39,9 +33,8 @@ export default function Home() {
     // console.log(todoData);
     // }, [todoData])
 
-    // reference to description input in todo submission modal 
+    // reference to description input in todo submission modal
     const descRef = useRef<TextInput>(null);
-
 
     const addTodo = (label: string, description: string) => {
         setTodoData((td) => [
@@ -126,7 +119,7 @@ export default function Home() {
                                 width: 300,
                                 padding: 30,
                                 display: "flex",
-                                gap: 3,
+                                gap: 30,
                                 // shadowColor: "#000",
                                 // shadowOffset: {
                                 //     width: 0,
@@ -154,7 +147,7 @@ export default function Home() {
                                 }
                                 onPress={() => {
                                     setDescriptionOpen(!isDescriptionsOpen);
-                                    setDescription("");
+                                    if (!isDescriptionsOpen) setDescription("");
                                 }}
                             ></Button>
                             {isDescriptionsOpen ? (
@@ -167,28 +160,36 @@ export default function Home() {
                                 ></TextInput>
                             ) : null}
 
-                            {/* Submit Button */}
-                            <Button
-                                title="Submit"
-                                onPress={() => {
-                                    if (label.length > 0) {
-                                        addTodo(label, description);
+                            <View
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "row", 
+                                    justifyContent: "space-between"
+                                }}
+                            >
+                                {/* Submit Button */}
+                                <Button
+                                    title="Submit"
+                                    onPress={() => {
+                                        if (label.length > 0) {
+                                            addTodo(label, description);
+                                            setLabel("");
+                                            setDescription("");
+                                            setSubmissionOpen(false);
+                                        }
+                                    }}
+                                />
+                                {/* Close Button */}
+                                <Button
+                                    title="Close"
+                                    onPress={() => {
                                         setLabel("");
                                         setDescription("");
+                                        setDescriptionOpen(false);
                                         setSubmissionOpen(false);
-                                    }
-                                }}
-                            />
-
-                            <Button
-                                title="Close"
-                                onPress={() => {
-                                    setLabel("");
-                                    setDescription("");
-                                    setDescriptionOpen(false)
-                                    setSubmissionOpen(false);
-                                }}
-                            ></Button>
+                                    }}
+                                ></Button>
+                            </View>
                         </View>
                     </View>
                 </Modal>
