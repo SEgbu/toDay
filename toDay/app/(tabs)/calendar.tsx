@@ -26,7 +26,7 @@ export default function CalendarPage() {
                         | undefined
                 }
                 customHeader={CustomHeader}
-                style={{height: "100%", display: "flex", justifyContent: "space-evenly"}}
+                style={{height: "100%", display: "flex", justifyContent: "flex-start", gap: 100}}
             />
         </View>
     );
