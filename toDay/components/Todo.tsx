@@ -1,6 +1,6 @@
 import { TodoType } from "./TodoList";
 
-import { Button, Modal, Pressable, Text, TextInput, View } from "react-native";
+import { Button, Modal, Pressable, StyleProp, Text, TextInput, TextStyle, View } from "react-native";
 import Checkbox from "expo-checkbox";
 import { useState } from "react";
 import { useReorderableDrag } from "react-native-reorderable-list";
@@ -100,7 +100,7 @@ export const Todo: React.FC<TodoProps> = ({
                                 ? "line-through"
                                 : "none",
                             display: (description != "" && description != undefined) ? "block" : "none"
-                        }}
+                        } as StyleProp<TextStyle>}
                         onPress={() => setSeeMore(!seeMore)}
                     >
                         {description != "" && description != undefined
