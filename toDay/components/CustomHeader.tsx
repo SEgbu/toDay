@@ -153,6 +153,7 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
                     >
                         <TextInput
                             placeholder="Month (m or mm)"
+                            keyboardType="numeric"
                             value={navMonth}
                             onChangeText={(eventText) => {
                                 setNavMonth(eventText);
@@ -160,6 +161,7 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
                         ></TextInput>
                         <TextInput
                             placeholder="Year (yyyy)"
+                            keyboardType="numeric"
                             value={navYear}
                             onChangeText={(eventText) => {
                                 setNavYear(eventText);
