@@ -99,7 +99,6 @@ export const TodoList: React.FC<TodoListProps> = ({
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                width: 400,
                 height: 600,
             }}
         >

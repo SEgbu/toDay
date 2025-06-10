@@ -1,6 +1,15 @@
 import { TodoType } from "./TodoList";
 
-import { Button, Modal, Pressable, StyleProp, Text, TextInput, TextStyle, View } from "react-native";
+import {
+    Button,
+    Modal,
+    Pressable,
+    StyleProp,
+    Text,
+    TextInput,
+    TextStyle,
+    View,
+} from "react-native";
 import Checkbox from "expo-checkbox";
 import { useState } from "react";
 import { useReorderableDrag } from "react-native-reorderable-list";
@@ -40,7 +49,9 @@ export const Todo: React.FC<TodoProps> = ({
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    paddingBottom: 20
+                    paddingBottom: 20, 
+                    marginRight: 10, 
+                    marginLeft: 10 
                 }}
             >
                 {/* Drag area */}
@@ -75,7 +86,10 @@ export const Todo: React.FC<TodoProps> = ({
                         display: "flex",
                         flexDirection: "column",
                         width: 100,
-                        gap: (description != "" && description != undefined) ? 5 : 0
+                        gap:
+                            description != "" && description != undefined
+                                ? 5
+                                : 0,
                     }}
                 >
                     {/* Label (add "..." if they're too long) */}
@@ -95,17 +109,25 @@ export const Todo: React.FC<TodoProps> = ({
                     </Text>
                     {/* Description (add "..." if they're too long) */}
                     <Text
-                        style={{
-                            textDecorationLine: completed
-                                ? "line-through"
-                                : "none",
-                            display: (description != "" && description != undefined) ? "block" : "none"
-                        } as StyleProp<TextStyle>}
+                        style={
+                            {
+                                textDecorationLine: completed
+                                    ? "line-through"
+                                    : "none",
+                                display:
+                                    description != "" &&
+                                    description != undefined
+                                        ? "block"
+                                        : "none",
+                            } as StyleProp<TextStyle>
+                        }
                         onPress={() => setSeeMore(!seeMore)}
                     >
                         {description != "" && description != undefined
                             ? description.length > 8 && !seeMore
-                                ? "Description: " + description.substring(0, 8) + "..."
+                                ? "Description: " +
+                                  description.substring(0, 8) +
+                                  "..."
                                 : "Description: " + description
                             : null}
                     </Text>
@@ -122,7 +144,6 @@ export const Todo: React.FC<TodoProps> = ({
                 ></Button>
             </View>
 
-
             {/* Option Menu */}
             <View>
                 {/* Rename Modal */}
@@ -137,7 +158,7 @@ export const Todo: React.FC<TodoProps> = ({
                             justifyContent: "center",
                             alignItems: "center",
                         }}
-                        >
+                    >
                         <View
                             style={{
                                 backgroundColor: "white",
@@ -150,17 +171,16 @@ export const Todo: React.FC<TodoProps> = ({
                             </Text>
 
                             {/* Update Inputs */}
-                            <Text>Enter New Name: </Text>
                             <TextInput
                                 value={newName}
                                 onChangeText={setNewName}
+                                placeholder="Enter a label"
                             ></TextInput>
-                            <Text>{"\n"}</Text>
 
-                            <Text>Change/Add a description: </Text>
                             <TextInput
                                 value={newDescription}
                                 onChangeText={setNewDescription}
+                                placeholder="Add a description?"
                             ></TextInput>
                             <Text>{"\n"}</Text>
 
@@ -170,35 +190,6 @@ export const Todo: React.FC<TodoProps> = ({
                                     gap: 10,
                                 }}
                             >
-                                {/* Submit */}
-                                <Button
-                                    title="Submit"
-                                    onPress={() => {
-                                        setTodoData((currentTodos) =>
-                                            currentTodos.map((todo) =>
-                                                todo.id === id
-                                                    ? {
-                                                          ...todo,
-                                                          label: newName,
-                                                      }
-                                                    : todo
-                                            )
-                                        );
-                                        setTodoData((currentTodos) =>
-                                            currentTodos.map((todo) =>
-                                                todo.id === id
-                                                    ? {
-                                                          ...todo,
-                                                          description:
-                                                              newDescription,
-                                                      }
-                                                    : todo
-                                            )
-                                        );
-                                        setOptionMenuOpen(false);
-                                    }}
-                                />
-
                                 <View
                                     style={{
                                         display: "flex",
@@ -217,11 +208,37 @@ export const Todo: React.FC<TodoProps> = ({
                                             )
                                         }
                                     ></Button>
-                                    {/* Close */}
+
+                                    {/* Submit */}
                                     <Button
-                                        title="Close"
-                                        onPress={() => setOptionMenuOpen(false)}
-                                    ></Button>
+                                        title="Submit/Close"
+                                        onPress={() => {
+                                            if (!(newName === "")) {
+                                                setTodoData((currentTodos) =>
+                                                    currentTodos.map((todo) =>
+                                                        todo.id === id
+                                                            ? {
+                                                                  ...todo,
+                                                                  label: newName,
+                                                              }
+                                                            : todo
+                                                    )
+                                                );
+                                                setTodoData((currentTodos) =>
+                                                    currentTodos.map((todo) =>
+                                                        todo.id === id
+                                                            ? {
+                                                                  ...todo,
+                                                                  description:
+                                                                      newDescription,
+                                                              }
+                                                            : todo
+                                                    )
+                                                );
+                                            }
+                                            setOptionMenuOpen(false);
+                                        }}
+                                    />
                                 </View>
                             </View>
                         </View>
