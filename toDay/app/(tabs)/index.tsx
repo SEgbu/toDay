@@ -2,8 +2,14 @@ import { TodoList, TodoType } from "@/components/TodoList";
 import { useCurrentDate } from "@/hooks/useCurrentDate";
 
 import { useSearchParams } from "expo-router/build/hooks";
-import { useState } from "react";
-import { Button, Modal, Pressable, Text, TextInput, View } from "react-native";
+import { useRef, useState } from "react";
+import {
+    Button,
+    Modal,
+    Text,
+    TextInput,
+    View,
+} from "react-native";
 
 export default function Home() {
     const searchParams = useSearchParams();
@@ -32,6 +38,10 @@ export default function Home() {
     // useEffect(() => {
     // console.log(todoData);
     // }, [todoData])
+
+    // reference to description input in todo submission modal 
+    const descRef = useRef<TextInput>(null);
+
 
     const addTodo = (label: string, description: string) => {
         setTodoData((td) => [
@@ -64,7 +74,6 @@ export default function Home() {
                 {new Date(!isEmpty ? selectedDay : currentDay).toDateString()}
             </Text>
 
-
             <TodoList
                 date={!isEmpty ? selectedDay : currentDay}
                 todoData={todoData}
@@ -94,21 +103,15 @@ export default function Home() {
                     }}
                 />
             </View>
-            
+
             {/* Todo Submission Section */}
             <View>
                 <Modal
-                    // style={{
-                    //     justifyContent: "center",
-                    //     alignItems: "center",
-                    //     gap: 10,
-                    // }}
                     visible={isSubmissionOpen}
                     animationType="fade"
-                    transparent={true}
-                    
-                    onRequestClose={() => setSubmissionOpen(false)}
+                    // transparent={true}
 
+                    onRequestClose={() => setSubmissionOpen(false)}
                 >
                     <View
                         style={{
@@ -124,14 +127,14 @@ export default function Home() {
                                 padding: 30,
                                 display: "flex",
                                 gap: 3,
-                                shadowColor: "#000",
-                                shadowOffset: {
-                                    width: 0,
-                                    height: 2,
-                                },
-                                shadowOpacity: 0.25,
-                                shadowRadius: 4,
-                                elevation: 5,
+                                // shadowColor: "#000",
+                                // shadowOffset: {
+                                //     width: 0,
+                                //     height: 2,
+                                // },
+                                // shadowOpacity: 0.25,
+                                // shadowRadius: 4,
+                                // elevation: 5,
                             }}
                         >
                             {/* Todo Label Input */}
@@ -139,6 +142,7 @@ export default function Home() {
                                 placeholder="Enter Todo"
                                 value={label}
                                 onChangeText={setLabel}
+                                autoFocus={true}
                             ></TextInput>
 
                             {/* Todo Description Input */}
@@ -155,9 +159,11 @@ export default function Home() {
                             ></Button>
                             {isDescriptionsOpen ? (
                                 <TextInput
+                                    ref={descRef}
                                     placeholder="Enter Description"
                                     value={description}
                                     onChangeText={setDescription}
+                                    autoFocus={true}
                                 ></TextInput>
                             ) : null}
 
@@ -179,6 +185,7 @@ export default function Home() {
                                 onPress={() => {
                                     setLabel("");
                                     setDescription("");
+                                    setDescriptionOpen(false)
                                     setSubmissionOpen(false);
                                 }}
                             ></Button>
