@@ -100,7 +100,7 @@ export const TodoList: React.FC<TodoListProps> = ({
                 flexDirection: "column",
                 alignItems: "center",
                 width: 400,
-                height: todoData.length == 0 ? 0 : todoData.length * 30 + 200,
+                height: 600,
             }}
         >
             <View>

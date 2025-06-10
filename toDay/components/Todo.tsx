@@ -20,8 +20,7 @@ export const Todo: React.FC<TodoProps> = ({
     setTodoData,
     id,
 }) => {
-    const [isThreeDotOpen, setThreeDotOpen] = useState<boolean>(false);
-    const [isRenameModalOpen, setRenameModalOpen] = useState<boolean>(false);
+    const [isOptionMenuOpen, setOptionMenuOpen] = useState<boolean>(false);
     const [newName, setNewName] = useState<string>("");
     const [newDescription, setNewDescription] = useState<string>("");
     const [seeMore, setSeeMore] = useState<boolean>(false);
@@ -34,138 +33,144 @@ export const Todo: React.FC<TodoProps> = ({
     // }, [setCanDrag]);
 
     return (
-        <View
-            style={{
-                minWidth: 300,
-                flexDirection: "row",
-                gap: 20,
-                alignItems: "center",
-                justifyContent: "space-around",
-            }}
-        >
-            {/* Drag area */}
-            <Pressable
-                onPressIn={() => {
-                    drag();
-                }}
-                style={{
-                    backgroundColor: "grey",
-                    height: 30,
-                }}
-            >
-                <Text>Drag</Text>
-            </Pressable>
-
-            {/* Check and uncheck todos and update todo data */}
-            <Checkbox
-                value={completed}
-                onValueChange={() => {
-                    setTodoData((currentTodos) =>
-                        currentTodos.map((t) =>
-                            t.id === id ? { ...t, completed: !t.completed } : t
-                        )
-                    );
-                }}
-            ></Checkbox>
-
-            {/* Strikethrough todo label if todo have been checked */}
+        <View>
             <View
                 style={{
-                    display: "flex",
-                    flexDirection: "column",       
+                    width: 300,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    paddingBottom: 20
                 }}
             >
-                <Text
-                    style={{
-                        textDecorationLine: completed ? "line-through" : "none",
-                        maxWidth: 100,
+                {/* Drag area */}
+                <Pressable
+                    onPressIn={() => {
+                        drag();
                     }}
-                    onPress={() => setSeeMore(!seeMore)}
+                    style={{
+                        backgroundColor: "grey",
+                        height: 30,
+                    }}
+                >
+                    <Text>Drag</Text>
+                </Pressable>
+                {/* Check and uncheck todos and update todo data */}
+                <Checkbox
+                    value={completed}
+                    onValueChange={() => {
+                        setTodoData((currentTodos) =>
+                            currentTodos.map((t) =>
+                                t.id === id
+                                    ? { ...t, completed: !t.completed }
+                                    : t
+                            )
+                        );
+                    }}
+                ></Checkbox>
+
+                {/* Strikethrough todo label if todo have been checked */}
+                <View
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: 100,
+                        gap: (description != "" && description != undefined) ? 5 : 0
+                    }}
                 >
                     {/* Label (add "..." if they're too long) */}
-                    {label != "" && label != undefined
-                        ? label.length > 40 && !seeMore
-                            ? label.substring(0, 40) + "..."
-                            : label
-                        : null}
-                </Text>
-                <Text
-                    style={{
-                        textDecorationLine: completed ? "line-through" : "none",
-                        maxWidth: 100,
-                    }}
-                    onPress={() => setSeeMore(!seeMore)}
+                    <Text
+                        style={{
+                            textDecorationLine: completed
+                                ? "line-through"
+                                : "none",
+                        }}
+                        onPress={() => setSeeMore(!seeMore)}
                     >
-                        {/* Description (add "..." if they're too long) */}
+                        {label != "" && label != undefined
+                            ? label.length > 40 && !seeMore
+                                ? label.substring(0, 40) + "..."
+                                : label
+                            : null}
+                    </Text>
+                    {/* Description (add "..." if they're too long) */}
+                    <Text
+                        style={{
+                            textDecorationLine: completed
+                                ? "line-through"
+                                : "none",
+                            display: (description != "" && description != undefined) ? "block" : "none"
+                        }}
+                        onPress={() => setSeeMore(!seeMore)}
+                    >
                         {description != "" && description != undefined
                             ? description.length > 8 && !seeMore
-                                ?  description.substring(0, 8) + "..."
-                                :  "\n"+description
+                                ? "Description: " + description.substring(0, 8) + "..."
+                                : "Description: " + description
                             : null}
-                </Text>
+                    </Text>
+                </View>
+
+                {/* Options Buttons */}
+                <Button
+                    title="Options"
+                    onPress={() => {
+                        setOptionMenuOpen(true);
+                        setNewName(label);
+                        setNewDescription(description);
+                    }}
+                ></Button>
             </View>
 
-            {/* Option menu button */}
-            <Button
-                title={!isThreeDotOpen ? "Options" : "Close"}
-                onPress={() => setThreeDotOpen(!isThreeDotOpen)}
-            />
 
             {/* Option Menu */}
-            {isThreeDotOpen ? (
-                <View style={{ maxWidth: 100 }}>
-                    <Button
-                        title="Delete"
-                        onPress={() =>
-                            setTodoData((currentTodos) =>
-                                currentTodos.filter((td) => td.label != label)
-                            )
-                        }
-                    ></Button>
-                    <Button
-                        title="Rename"
-                        onPress={() => {
-                            setRenameModalOpen(true);
-                            setNewName(label);
-                            setNewDescription(description);
+            <View>
+                {/* Rename Modal */}
+                <Modal
+                    visible={isOptionMenuOpen}
+                    transparent={true}
+                    animationType="slide"
+                >
+                    <View
+                        style={{
+                            flex: 1,
+                            justifyContent: "center",
+                            alignItems: "center",
                         }}
-                    ></Button>
-
-                    {/* Rename Modal */}
-                    <Modal
-                        visible={isRenameModalOpen}
-                        transparent={true}
-                        animationType="slide"
-                    >
+                        >
                         <View
                             style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignItems: "center",
+                                backgroundColor: "white",
+                                width: 300,
+                                padding: 30,
                             }}
                         >
+                            <Text style={{ fontWeight: "800", fontSize: 20 }}>
+                                Options {"\n"}
+                            </Text>
+
+                            {/* Update Inputs */}
+                            <Text>Enter New Name: </Text>
+                            <TextInput
+                                value={newName}
+                                onChangeText={setNewName}
+                            ></TextInput>
+                            <Text>{"\n"}</Text>
+
+                            <Text>Change/Add a description: </Text>
+                            <TextInput
+                                value={newDescription}
+                                onChangeText={setNewDescription}
+                            ></TextInput>
+                            <Text>{"\n"}</Text>
+
                             <View
                                 style={{
-                                    backgroundColor: "white",
-                                    padding: 30,
+                                    display: "flex",
+                                    gap: 10,
                                 }}
                             >
-                                <Text style={{fontWeight: "800", fontSize: 20}}>Rename Todo: {"\n"}</Text>
-
-                                <Text>Enter New Name: </Text>
-                                <TextInput
-                                    value={newName}
-                                    onChangeText={setNewName}
-                                ></TextInput>
-                                <Text>{"\n"}</Text>
-
-                                <Text>Change/Add a description: </Text>
-                                <TextInput
-                                    value={newDescription}
-                                    onChangeText={setNewDescription}
-                                ></TextInput>
-                                <Text>{"\n"}</Text>
-
+                                {/* Submit */}
                                 <Button
                                     title="Submit"
                                     onPress={() => {
@@ -190,18 +195,39 @@ export const Todo: React.FC<TodoProps> = ({
                                                     : todo
                                             )
                                         );
-                                        setRenameModalOpen(false);
+                                        setOptionMenuOpen(false);
                                     }}
                                 />
-                                <Button
-                                    title="Close"
-                                    onPress={() => setRenameModalOpen(false)}
-                                ></Button>
+
+                                <View
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    {/* Delete */}
+                                    <Button
+                                        title="Delete"
+                                        onPress={() =>
+                                            setTodoData((currentTodos) =>
+                                                currentTodos.filter(
+                                                    (td) => td.label != label
+                                                )
+                                            )
+                                        }
+                                    ></Button>
+                                    {/* Close */}
+                                    <Button
+                                        title="Close"
+                                        onPress={() => setOptionMenuOpen(false)}
+                                    ></Button>
+                                </View>
                             </View>
                         </View>
-                    </Modal>
-                </View>
-            ) : null}
+                    </View>
+                </Modal>
+            </View>
         </View>
     );
 };

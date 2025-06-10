@@ -55,9 +55,8 @@ export default function Home() {
     return (
         <View
             style={{
-                flex: 1,
-                justifyContent: "center",
-                gap: 10,
+                display: "flex",
+                gap: 35,
             }}
         >
             {/* Date */}
