@@ -62,16 +62,9 @@ export default function Home() {
         >
             {/* Date */}
             <Text style={{ fontSize: 30, textAlign: "center" }}>
-                {!isEmpty ? selectedDay : currentDay}
+                {new Date(!isEmpty ? selectedDay : currentDay).toDateString()}
             </Text>
 
-            {/* Clear All Button */}
-            <View style={{ display: "flex", alignItems: "center" }}>
-                <Button
-                    title={"Clear All"}
-                    onPress={() => clearAllTodos()}
-                ></Button>
-            </View>
 
             <TodoList
                 date={!isEmpty ? selectedDay : currentDay}
@@ -79,14 +72,21 @@ export default function Home() {
                 setTodoData={setTodoData}
             ></TodoList>
 
-            {/* Todo Submission Section */}
             <View
                 style={{
-                    justifyContent: "center",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-around",
                     alignItems: "center",
-                    gap: 10,
                 }}
             >
+                {/* Clear All Button */}
+                <Button
+                    title={"Clear All"}
+                    onPress={() => clearAllTodos()}
+                ></Button>
+
+                {/* Todo Submission Section Opener */}
                 <Button
                     title={!isSubmissionOpen ? "+" : "-"}
                     onPress={() => {
@@ -95,7 +95,8 @@ export default function Home() {
                     }}
                 />
             </View>
-
+            
+            {/* Todo Submission Section */}
             <View>
                 <Modal
                     // style={{
