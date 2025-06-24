@@ -1,7 +1,7 @@
 import { TodoType } from "./TodoList";
 
 import {
-    Button,
+    TouchableOpacity,
     Modal,
     Pressable,
     StyleProp,
@@ -49,23 +49,28 @@ export const Todo: React.FC<TodoProps> = ({
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    paddingBottom: 20, 
-                    marginRight: 10, 
-                    marginLeft: 10 
+                    paddingBottom: 20,
+                    marginRight: 10,
+                    marginLeft: 10,
                 }}
             >
                 {/* Drag area */}
-                <Pressable
-                    onPressIn={() => {
-                        drag();
-                    }}
-                    style={{
-                        backgroundColor: "grey",
-                        height: 30,
-                    }}
-                >
-                    <Text>Drag</Text>
-                </Pressable>
+                {
+                    seeMore ? 
+                    <Pressable
+                        onPressIn={() => {
+                            drag();
+                        }}
+                        style={{
+                            backgroundColor: "grey",
+                            height: 30,
+                        }}
+                    >
+                        <Text>Drag</Text>
+                    </Pressable>
+                    : 
+                    null
+                }
                 {/* Check and uncheck todos and update todo data */}
                 <Checkbox
                     value={completed}
@@ -85,7 +90,7 @@ export const Todo: React.FC<TodoProps> = ({
                     style={{
                         display: "flex",
                         flexDirection: "column",
-                        width: 100,
+                        width: seeMore ? 100 : 200,
                         gap:
                             description != "" && description != undefined
                                 ? 5
@@ -102,8 +107,8 @@ export const Todo: React.FC<TodoProps> = ({
                         onPress={() => setSeeMore(!seeMore)}
                     >
                         {label != "" && label != undefined
-                            ? label.length > 40 && !seeMore
-                                ? label.substring(0, 40) + "..."
+                            ? label.length > 25 && !seeMore
+                                ? label.substring(0, 25) + "..."
                                 : label
                             : null}
                     </Text>
@@ -124,9 +129,9 @@ export const Todo: React.FC<TodoProps> = ({
                         onPress={() => setSeeMore(!seeMore)}
                     >
                         {description != "" && description != undefined
-                            ? description.length > 8 && !seeMore
+                            ? description.length > 15 && !seeMore
                                 ? "Description: " +
-                                  description.substring(0, 8) +
+                                  description.substring(0, 15) +
                                   "..."
                                 : "Description: " + description
                             : null}
@@ -134,14 +139,15 @@ export const Todo: React.FC<TodoProps> = ({
                 </View>
 
                 {/* Options Buttons */}
-                <Button
-                    title="Options"
+                <TouchableOpacity
                     onPress={() => {
                         setOptionMenuOpen(true);
                         setNewName(label);
                         setNewDescription(description);
                     }}
-                ></Button>
+                >
+                    <Text>Options</Text>
+                </TouchableOpacity>
             </View>
 
             {/* Option Menu */}
@@ -198,8 +204,7 @@ export const Todo: React.FC<TodoProps> = ({
                                     }}
                                 >
                                     {/* Delete */}
-                                    <Button
-                                        title="Delete"
+                                    <TouchableOpacity
                                         onPress={() =>
                                             setTodoData((currentTodos) =>
                                                 currentTodos.filter(
@@ -207,11 +212,12 @@ export const Todo: React.FC<TodoProps> = ({
                                                 )
                                             )
                                         }
-                                    ></Button>
+                                    >
+                                        <Text>Delete</Text>
+                                    </TouchableOpacity>
 
                                     {/* Submit */}
-                                    <Button
-                                        title="Submit/Close"
+                                    <TouchableOpacity
                                         onPress={() => {
                                             if (!(newName === "")) {
                                                 setTodoData((currentTodos) =>
@@ -238,7 +244,9 @@ export const Todo: React.FC<TodoProps> = ({
                                             }
                                             setOptionMenuOpen(false);
                                         }}
-                                    />
+                                    >
+                                        <Text>Save/Cancel</Text>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </View>

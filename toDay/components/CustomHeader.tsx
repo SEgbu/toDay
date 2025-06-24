@@ -1,3 +1,4 @@
+import { globalStyle } from "@/styles/GlobalStyle";
 import {
     useCallback,
     useImperativeHandle,
@@ -7,13 +8,16 @@ import {
 } from "react";
 import {
     AccessibilityActionEvent,
-    Button,
+    TouchableOpacity,
     Modal,
+    StyleProp,
     Text,
     TextInput,
     View,
+    ViewStyle,
 } from "react-native";
 import { CalendarProps } from "react-native-calendars";
+import { ColorProps } from "react-native-svg";
 
 export const CustomHeader: React.FC<CalendarProps> = (props) => {
     const {
@@ -91,21 +95,27 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
                     justifyContent: "space-between",
                 }}
             >
-                <Button
-                    title={"Left"}
+                <TouchableOpacity
                     onPress={onPressLeft}
                     touchSoundDisabled={false}
-                ></Button>
+                    style={globalStyle.buttonContainer}
+                >
+                    <Text style={globalStyle.smallText}>Left</Text>
+                </TouchableOpacity>
                 <Text>{month.toString(monthFormat)}</Text>
-                <Button
-                    title={"QuickNav"}
+                <TouchableOpacity 
                     onPress={() => setQuickNavOpen(true)}
-                ></Button>
-                <Button
-                    title="Right"
+                    style={globalStyle.buttonContainer}
+                >
+                    <Text style={globalStyle.smallText}>QuickNav</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                     onPress={onPressRight}
                     touchSoundDisabled={false}
-                ></Button>
+                    style={globalStyle.buttonContainer}
+                >
+                    <Text style={globalStyle.smallText}>Right</Text>
+                </TouchableOpacity>
             </View>
             <View
                 style={{
@@ -167,8 +177,7 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
                                 setNavYear(eventText);
                             }}
                         ></TextInput>
-                        <Button
-                            title="Submit"
+                        <TouchableOpacity
                             onPress={() => {
                                 if (navMonth != "" && navYear != "") {
                                     handleNav(navMonth, navYear);
@@ -178,15 +187,18 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
                                     setQuickNavOpen(false);
                                 }
                             }}
-                        ></Button>
-                        <Button
-                            title="Close"
+                        >
+                            <Text>Go</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
                             onPress={() => {
                                 setNavMonth("");
                                 setNavYear("");
                                 setQuickNavOpen(false);
                             }}
-                        ></Button>
+                        >
+                            <Text>Cancel</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Modal>

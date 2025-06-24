@@ -3,7 +3,7 @@ import { useCurrentDate } from "@/hooks/useCurrentDate";
 
 import { useSearchParams } from "expo-router/build/hooks";
 import { useRef, useState } from "react";
-import { Button, Modal, Text, TextInput, View } from "react-native";
+import { TouchableOpacity, Modal, Text, TextInput, View } from "react-native";
 
 export default function Home() {
     const searchParams = useSearchParams();
@@ -81,20 +81,20 @@ export default function Home() {
                     alignItems: "center",
                 }}
             >
-                {/* Clear All Button */}
-                <Button
-                    title={"Clear All"}
-                    onPress={() => clearAllTodos()}
-                ></Button>
+                {/* Clear All TouchableOpacity */}
+                <TouchableOpacity onPress={() => clearAllTodos()}>
+                    <Text>Clear All</Text>
+                </TouchableOpacity>
 
                 {/* Todo Submission Section Opener */}
-                <Button
-                    title={!isSubmissionOpen ? "+" : "-"}
+                <TouchableOpacity
                     onPress={() => {
                         setSubmissionOpen(!isSubmissionOpen);
                         setLabel("");
                     }}
-                />
+                >
+                    <Text>{!isSubmissionOpen ? "+" : "-"}</Text>
+                </TouchableOpacity>
             </View>
 
             {/* Todo Submission Section */}
@@ -139,17 +139,16 @@ export default function Home() {
                             ></TextInput>
 
                             {/* Todo Description Input */}
-                            <Button
-                                title={
-                                    !isDescriptionsOpen
-                                        ? "Add Description"
-                                        : "Close Description"
-                                }
+                            <TouchableOpacity
                                 onPress={() => {
                                     setDescriptionOpen(!isDescriptionsOpen);
                                     if (!isDescriptionsOpen) setDescription("");
                                 }}
-                            ></Button>
+                            >
+                                {!isDescriptionsOpen
+                                    ? "Add Description"
+                                    : "Close Description"}
+                            </TouchableOpacity>
                             {isDescriptionsOpen ? (
                                 <TextInput
                                     ref={descRef}
@@ -163,13 +162,12 @@ export default function Home() {
                             <View
                                 style={{
                                     display: "flex",
-                                    flexDirection: "row", 
-                                    justifyContent: "space-between"
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
                                 }}
                             >
-                                {/* Submit Button */}
-                                <Button
-                                    title="Submit"
+                                {/* Submit TouchableOpacity */}
+                                <TouchableOpacity
                                     onPress={() => {
                                         if (label.length > 0) {
                                             addTodo(label, description);
@@ -178,17 +176,20 @@ export default function Home() {
                                             setSubmissionOpen(false);
                                         }
                                     }}
-                                />
-                                {/* Close Button */}
-                                <Button
-                                    title="Close"
+                                >
+                                    <Text>Save</Text>
+                                </TouchableOpacity>
+                                {/* Close TouchableOpacity */}
+                                <TouchableOpacity
                                     onPress={() => {
                                         setLabel("");
                                         setDescription("");
                                         setDescriptionOpen(false);
                                         setSubmissionOpen(false);
                                     }}
-                                ></Button>
+                                >
+                                    <Text>Cancel</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>
