@@ -1,6 +1,10 @@
 import { colours } from "@/constants/Colours";
 import { Tabs } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Calendar from "../../assets/iconmonstr-calendar-4.svg";
+import Todos from "../../assets/iconmonstr-task-list-square-filled.svg";
+import { globalStyle } from "@/styles/GlobalStyle";
+import { fontStyle } from "@/constants/Text";
 
 export default function RootLayout() {
     return (
@@ -8,11 +12,37 @@ export default function RootLayout() {
             <Tabs
                 screenOptions={{
                     headerShown: false,
-                    tabBarStyle: { backgroundColor: colours.primary },
+                    tabBarStyle: { backgroundColor: colours.primary, height: "8%", paddingTop: 6, borderTopWidth: 0,},
+                    tabBarActiveTintColor: colours.text,
+                    tabBarInactiveTintColor: colours.textDim,
+                    tabBarLabelStyle: {
+                        fontSize: fontStyle.small,
+                        fontWeight: fontStyle.smallWeight,
+                        fontFamily: fontStyle.fontFamily,
+                    },
                 }}
             >
-                <Tabs.Screen name="calendar" />
-                <Tabs.Screen name="index" options={{ title: "todos" }} />
+                <Tabs.Screen
+                    name="calendar"
+                    options={{
+                        tabBarIcon: ({ color }) => (
+                            <Calendar
+                                width={30}
+                                height={30}
+                                fill={color}
+                            ></Calendar>
+                        ),
+                    }}
+                />
+                <Tabs.Screen
+                    name="index"
+                    options={{
+                        title: "todos",
+                        tabBarIcon: ({ color }) => (
+                            <Todos width={30} height={30} fill={color}></Todos>
+                        ),
+                    }}
+                />
             </Tabs>
         </GestureHandlerRootView>
     );
