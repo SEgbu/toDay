@@ -20,6 +20,9 @@ export default function RootLayout() {
                         fontWeight: fontStyle.smallWeight,
                         fontFamily: fontStyle.fontFamily,
                     },
+                    headerPressColor: "transparent", 
+                    headerPressOpacity: 0,
+                    animation: "fade",
                 }}
             >
                 <Tabs.Screen

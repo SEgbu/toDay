@@ -11,7 +11,8 @@ import { LinearGradient } from "expo-linear-gradient";
 
 export default function CalendarPage() {
     return (
-        <View>
+        <View>   
+            <LinearGradient colors={[colours.primary, colours.background]} start={{x: 0.5, y: 1}} end={{x: 0.5, y: 0.9}}>
             <Calendar
                 onDayPress={(day: any) => {
                     // Navigate with selected date
@@ -27,16 +28,17 @@ export default function CalendarPage() {
                           >
                         | undefined
                 }
-                theme={{calendarBackground: colours.background}}
+                theme={{calendarBackground: "transparent"}}
                 customHeader={CustomHeader}
                 style={{
                     height: "100%",
                     display: "flex",
                     justifyContent: "flex-start",
                     gap: 70,
-                    backgroundColor: colours.background
+                    backgroundColor: "transparent"
                 }}
             />
+            </LinearGradient>
         </View>
     );
 }
