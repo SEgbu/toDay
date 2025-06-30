@@ -15,9 +15,13 @@ import {
     TextInput,
     View,
     ViewStyle,
+    Image,
 } from "react-native";
 import { CalendarProps } from "react-native-calendars";
-import { ColorProps } from "react-native-svg";
+import { colours } from "@/constants/Colours";
+
+import Arrow from "../assets/iconmonstr-arrow-left-circle-filled.svg"
+import QuickNav from "../assets/iconmonstr-caret-down-circle.svg"
 
 export const CustomHeader: React.FC<CalendarProps> = (props) => {
     const {
@@ -92,29 +96,26 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
                 style={{
                     display: "flex",
                     flexDirection: "row",
-                    justifyContent: "space-between",
+                    justifyContent: "space-around",
                 }}
             >
                 <TouchableOpacity
                     onPress={onPressLeft}
                     touchSoundDisabled={false}
-                    style={globalStyle.buttonContainer}
                 >
-                    <Text style={globalStyle.smallText}>Left</Text>
+                    <Arrow width={30} height={30} fill={colours.text}></Arrow>
                 </TouchableOpacity>
-                <Text>{month.toString(monthFormat)}</Text>
+                <Text style={globalStyle.h1Text}>{month.toString(monthFormat)}</Text>
                 <TouchableOpacity 
                     onPress={() => setQuickNavOpen(true)}
-                    style={globalStyle.buttonContainer}
                 >
-                    <Text style={globalStyle.smallText}>QuickNav</Text>
+                    <QuickNav width={30} height={30} fill={colours.text}></QuickNav>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={onPressRight}
                     touchSoundDisabled={false}
-                    style={globalStyle.buttonContainer}
                 >
-                    <Text style={globalStyle.smallText}>Right</Text>
+                    <Arrow width={30} height={30} rotation={180} fill={colours.text}></Arrow>
                 </TouchableOpacity>
             </View>
             <View

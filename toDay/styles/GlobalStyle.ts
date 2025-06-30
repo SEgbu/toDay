@@ -11,6 +11,8 @@ export const globalStyle = StyleSheet.create({
         height: 30, 
 
         backgroundColor: colours.primary,
+
+        borderRadius: 8
     },
     
     smallText: {
@@ -18,5 +20,26 @@ export const globalStyle = StyleSheet.create({
         fontSize: fontStyle.small,
         fontWeight: fontStyle.smallWeight,
         fontFamily: fontStyle.fontFamily
-    }
+    },
+
+    normalText: {
+        color: colours.text,
+        fontSize: fontStyle.normal,
+        fontWeight: fontStyle.normalWeight,
+        fontFamily: fontStyle.fontFamily
+    }, 
+
+    h1Text: {
+        color: colours.text,
+        fontSize: fontStyle.h1,
+        fontWeight: fontStyle.h1Weight,
+        fontFamily: fontStyle.fontFamily
+    }, 
+
+    h2Text: {
+        color: colours.text,
+        fontSize: fontStyle.h2,
+        fontWeight: fontStyle.h2Weight,
+        fontFamily: fontStyle.fontFamily
+    }, 
 });
