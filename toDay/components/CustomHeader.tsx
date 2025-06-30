@@ -22,6 +22,7 @@ import { colours } from "@/constants/Colours";
 
 import Arrow from "../assets/iconmonstr-arrow-left-circle-filled.svg"
 import QuickNav from "../assets/iconmonstr-caret-down-circle.svg"
+import { fontStyle } from "@/constants/Text";
 
 export const CustomHeader: React.FC<CalendarProps> = (props) => {
     const {
@@ -97,6 +98,8 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-around",
+                    alignItems: "center", 
+                    height: 75
                 }}
             >
                 <TouchableOpacity
@@ -125,13 +128,13 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
                     justifyContent: "space-around",
                 }}
             >
-                <Text style={{ color: "grey" }}>Sun</Text>
-                <Text style={{ color: "grey" }}>Mon</Text>
-                <Text style={{ color: "grey" }}>Tue</Text>
-                <Text style={{ color: "grey" }}>Wed</Text>
-                <Text style={{ color: "grey" }}>Thu</Text>
-                <Text style={{ color: "grey" }}>Fri</Text>
-                <Text style={{ color: "grey" }}>Sat</Text>
+                <Text style={globalStyle.smallText}>Sun</Text>
+                <Text style={globalStyle.smallText}>Mon</Text>
+                <Text style={globalStyle.smallText}>Tue</Text>
+                <Text style={globalStyle.smallText}>Wed</Text>
+                <Text style={globalStyle.smallText}>Thu</Text>
+                <Text style={globalStyle.smallText}>Fri</Text>
+                <Text style={globalStyle.smallText}>Sat</Text>
             </View>
             <Modal
                 visible={isQuickNavOpen}

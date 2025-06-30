@@ -4,6 +4,7 @@ import { useCurrentDate } from "@/hooks/useCurrentDate";
 import { useSearchParams } from "expo-router/build/hooks";
 import { useRef, useState } from "react";
 import { TouchableOpacity, Modal, Text, TextInput, View } from "react-native";
+import { globalStyle } from "@/styles/GlobalStyle";
 
 export default function Home() {
     const searchParams = useSearchParams();
@@ -90,6 +91,8 @@ export default function Home() {
                 <TouchableOpacity
                     onPress={() => {
                         setSubmissionOpen(!isSubmissionOpen);
+                        setDescriptionOpen(false);
+                        console.log(isDescriptionsOpen);
                         setLabel("");
                     }}
                 >
@@ -142,12 +145,13 @@ export default function Home() {
                             <TouchableOpacity
                                 onPress={() => {
                                     setDescriptionOpen(!isDescriptionsOpen);
-                                    if (!isDescriptionsOpen) setDescription("");
                                 }}
                             >
-                                {!isDescriptionsOpen
-                                    ? "Add Description"
-                                    : "Close Description"}
+                                <Text>
+                                    {!isDescriptionsOpen
+                                        ? "Add Description"
+                                        : "Close Description"}
+                                </Text>
                             </TouchableOpacity>
                             {isDescriptionsOpen ? (
                                 <TextInput
@@ -176,8 +180,11 @@ export default function Home() {
                                             setSubmissionOpen(false);
                                         }
                                     }}
+                                    style={globalStyle.buttonContainer}
                                 >
-                                    <Text>Save</Text>
+                                    <Text style={globalStyle.smallText}>
+                                        Save
+                                    </Text>
                                 </TouchableOpacity>
                                 {/* Close TouchableOpacity */}
                                 <TouchableOpacity
@@ -187,8 +194,11 @@ export default function Home() {
                                         setDescriptionOpen(false);
                                         setSubmissionOpen(false);
                                     }}
+                                    style={globalStyle.buttonContainer}
                                 >
-                                    <Text>Cancel</Text>
+                                    <Text style={globalStyle.smallText}>
+                                        Cancel
+                                    </Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "backgroundColor": "#050518",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
