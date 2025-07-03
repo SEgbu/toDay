@@ -1,28 +1,14 @@
 import { globalStyle } from "@/styles/GlobalStyle";
-import {
-    useCallback,
-    useImperativeHandle,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
-import {
-    AccessibilityActionEvent,
-    TouchableOpacity,
-    Modal,
-    StyleProp,
-    Text,
-    TextInput,
-    View,
-    ViewStyle,
-    Image,
-} from "react-native";
+import { useCallback, useState } from "react";
+import { TouchableOpacity, Modal, Text, TextInput, View } from "react-native";
 import { CalendarProps } from "react-native-calendars";
 import { colours } from "@/constants/Colours";
+import { BlurView } from "expo-blur";
+import MaskedView from "@react-native-masked-view/masked-view";
 
-import Arrow from "../assets/iconmonstr-arrow-left-circle-filled.svg"
-import QuickNav from "../assets/iconmonstr-caret-down-circle.svg"
-import { fontStyle } from "@/constants/Text";
+import Arrow from "../assets/iconmonstr-arrow-left-circle-filled.svg";
+import QuickNav from "../assets/iconmonstr-caret-down-circle.svg";
+import { LinearGradient } from "expo-linear-gradient";
 
 export const CustomHeader: React.FC<CalendarProps> = (props) => {
     const {
@@ -98,8 +84,8 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-around",
-                    alignItems: "center", 
-                    height: 75
+                    alignItems: "center",
+                    height: 75,
                 }}
             >
                 <TouchableOpacity
@@ -108,17 +94,26 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
                 >
                     <Arrow width={30} height={30} fill={colours.text}></Arrow>
                 </TouchableOpacity>
-                <Text style={globalStyle.h1Text}>{month.toString(monthFormat)}</Text>
-                <TouchableOpacity 
-                    onPress={() => setQuickNavOpen(true)}
-                >
-                    <QuickNav width={30} height={30} fill={colours.text}></QuickNav>
+                <Text style={globalStyle.h1Text}>
+                    {month.toString(monthFormat)}
+                </Text>
+                <TouchableOpacity onPress={() => setQuickNavOpen(true)}>
+                    <QuickNav
+                        width={30}
+                        height={30}
+                        fill={colours.text}
+                    ></QuickNav>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={onPressRight}
                     touchSoundDisabled={false}
                 >
-                    <Arrow width={30} height={30} rotation={180} fill={colours.text}></Arrow>
+                    <Arrow
+                        width={30}
+                        height={30}
+                        rotation={180}
+                        fill={colours.text}
+                    ></Arrow>
                 </TouchableOpacity>
             </View>
             <View
@@ -143,67 +138,135 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
             >
                 <View
                     style={{
-                        flex: 1,
+                        height: "100%",
+                        width: "100%",
+                        display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                     }}
                 >
-                    <View
+                    <LinearGradient
+                        colors={[colours.text, colours.accent]}
+                        start={{ x: 0.4, y: 0.3 }}
+                        end={{ x: 0.05, y: 0.05 }}
                         style={{
-                            backgroundColor: "white",
                             width: 300,
-                            padding: 30,
-                            display: "flex",
-                            gap: 3,
-                            shadowColor: "#000",
-                            shadowOffset: {
-                                width: 0,
-                                height: 2,
-                            },
-                            shadowOpacity: 0.25,
-                            shadowRadius: 4,
-                            elevation: 5,
+                            height: 250,
+                            borderRadius: 16,
                         }}
                     >
-                        <TextInput
-                            placeholder="Month (m or mm)"
-                            keyboardType="numeric"
-                            value={navMonth}
-                            onChangeText={(eventText) => {
-                                setNavMonth(eventText);
+                        <View
+                            style={{
+                                // borderRadius: 0,
+                                margin: 1,
+                                justifyContent: "center",
+                                flex: 1,
                             }}
-                        ></TextInput>
-                        <TextInput
-                            placeholder="Year (yyyy)"
-                            keyboardType="numeric"
-                            value={navYear}
-                            onChangeText={(eventText) => {
-                                setNavYear(eventText);
-                            }}
-                        ></TextInput>
-                        <TouchableOpacity
-                            onPress={() => {
-                                if (navMonth != "" && navYear != "") {
-                                    handleNav(navMonth, navYear);
+                        >
+                            <LinearGradient
+                                colors={[colours.primary, colours.background]}
+                                start={{ x: 1, y: 1 }}
+                                end={{ x: 0, y: 0 }}
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    borderRadius: 16,
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: 40,
+                                        padding: 30,
+                                    }}
+                                >
+                                    <TextInput
+                                        placeholder="Month (m or mm)"
+                                        placeholderTextColor={colours.textDim}
+                                        style={{
+                                            borderWidth: 1,
+                                            borderRadius: 8,
+                                            borderColor: colours.text,
+                                            color: colours.text
+                                        }}
+                                        keyboardType="numeric"
+                                        value={navMonth}
+                                        onChangeText={(eventText) => {
+                                            setNavMonth(eventText);
+                                        }}
+                                    ></TextInput>
 
-                                    setNavMonth("");
-                                    setNavYear("");
-                                    setQuickNavOpen(false);
-                                }
-                            }}
-                        >
-                            <Text>Go</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                setNavMonth("");
-                                setNavYear("");
-                                setQuickNavOpen(false);
-                            }}
-                        >
-                            <Text>Cancel</Text>
-                        </TouchableOpacity>
-                    </View>
+                                    <TextInput
+                                        placeholder="Year (yyyy)"
+                                        placeholderTextColor={colours.textDim}
+                                        style={{
+                                            borderWidth: 1,
+                                            borderRadius: 8,
+                                            borderColor: colours.text,
+                                            color: colours.text
+                                        }}
+                                        keyboardType="numeric"
+                                        value={navYear}
+                                        onChangeText={(eventText) => {
+                                            setNavYear(eventText);
+                                        }}
+                                    ></TextInput>
+                                    <View
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            gap: 80,
+                                        }}
+                                    >
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                setNavMonth("");
+                                                setNavYear("");
+                                                setQuickNavOpen(false);
+                                            }}
+                                            style={{
+                                                ...globalStyle.buttonContainer,
+                                                backgroundColor: "transparent",
+                                                borderWidth: 1,
+                                                borderColor: colours.text,
+                                            }}
+                                        >
+                                            <Text style={globalStyle.smallText}>
+                                                Cancel
+                                            </Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                if (
+                                                    navMonth != "" &&
+                                                    navYear != ""
+                                                ) {
+                                                    handleNav(
+                                                        navMonth,
+                                                        navYear
+                                                    );
+                                                    setNavMonth("");
+                                                    setNavYear("");
+                                                    setQuickNavOpen(false);
+                                                }
+                                            }}
+                                            style={{
+                                                ...globalStyle.buttonContainer,
+                                                backgroundColor: "transparent",
+                                                borderWidth: 1,
+                                                borderColor: colours.text,
+                                            }}
+                                        >
+                                            <Text style={globalStyle.smallText}>
+                                                Go
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </LinearGradient>
+                        </View>
+                    </LinearGradient>
                 </View>
             </Modal>
         </View>

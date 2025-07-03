@@ -13,6 +13,10 @@ import {
 import Checkbox from "expo-checkbox";
 import { useState } from "react";
 import { useReorderableDrag } from "react-native-reorderable-list";
+import { LinearGradient } from "expo-linear-gradient";
+import { colours } from "@/constants/Colours";
+import { globalStyle } from "@/styles/GlobalStyle";
+import DeleteButton from "../assets/iconmonstr-trash-can-filled.svg";
 
 type TodoProps = {
     id: number;
@@ -55,8 +59,7 @@ export const Todo: React.FC<TodoProps> = ({
                 }}
             >
                 {/* Drag area */}
-                {
-                    seeMore ? 
+                {seeMore ? (
                     <Pressable
                         onPressIn={() => {
                             drag();
@@ -68,9 +71,7 @@ export const Todo: React.FC<TodoProps> = ({
                     >
                         <Text>Drag</Text>
                     </Pressable>
-                    : 
-                    null
-                }
+                ) : null}
                 {/* Check and uncheck todos and update todo data */}
                 <Checkbox
                     value={completed}
@@ -160,96 +161,174 @@ export const Todo: React.FC<TodoProps> = ({
                 >
                     <View
                         style={{
-                            flex: 1,
+                            height: "100%",
+                            width: "100%",
+                            display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
                         }}
                     >
-                        <View
+                        <LinearGradient
+                            colors={[colours.text, colours.accent]}
+                            start={{ x: 0.4, y: 0.3 }}
+                            end={{ x: 0.05, y: 0.05 }}
                             style={{
-                                backgroundColor: "white",
                                 width: 300,
-                                padding: 30,
+                                height: 250,
+                                borderRadius: 16,
                             }}
                         >
-                            <Text style={{ fontWeight: "800", fontSize: 20 }}>
-                                Options {"\n"}
-                            </Text>
-
-                            {/* Update Inputs */}
-                            <TextInput
-                                value={newName}
-                                onChangeText={setNewName}
-                                placeholder="Enter a label"
-                            ></TextInput>
-
-                            <TextInput
-                                value={newDescription}
-                                onChangeText={setNewDescription}
-                                placeholder="Add a description?"
-                            ></TextInput>
-                            <Text>{"\n"}</Text>
-
                             <View
                                 style={{
-                                    display: "flex",
-                                    gap: 10,
+                                    // borderRadius: 0,
+                                    margin: 1,
+                                    justifyContent: "center",
+                                    flex: 1,
                                 }}
                             >
-                                <View
+                                <LinearGradient
+                                    colors={[
+                                        colours.primary,
+                                        colours.background,
+                                    ]}
+                                    start={{ x: 1, y: 1 }}
+                                    end={{ x: 0, y: 0 }}
                                     style={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        justifyContent: "space-between",
+                                        width: "100%",
+                                        height: "100%",
+                                        borderRadius: 16,
                                     }}
                                 >
-                                    {/* Delete */}
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            setTodoData((currentTodos) =>
-                                                currentTodos.filter(
-                                                    (td) => td.label != label
-                                                )
-                                            )
-                                        }
-                                    >
-                                        <Text>Delete</Text>
-                                    </TouchableOpacity>
-
-                                    {/* Submit */}
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            if (!(newName === "")) {
-                                                setTodoData((currentTodos) =>
-                                                    currentTodos.map((todo) =>
-                                                        todo.id === id
-                                                            ? {
-                                                                  ...todo,
-                                                                  label: newName,
-                                                              }
-                                                            : todo
-                                                    )
-                                                );
-                                                setTodoData((currentTodos) =>
-                                                    currentTodos.map((todo) =>
-                                                        todo.id === id
-                                                            ? {
-                                                                  ...todo,
-                                                                  description:
-                                                                      newDescription,
-                                                              }
-                                                            : todo
-                                                    )
-                                                );
-                                            }
-                                            setOptionMenuOpen(false);
+                                    <View
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            height: "100%",
+                                            gap: 30, 
+                                            padding: 20,
                                         }}
                                     >
-                                        <Text>Save/Cancel</Text>
-                                    </TouchableOpacity>
-                                </View>
+                                        <View
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                gap: 20,
+                                            }}
+                                        >
+                                            {/* Update Inputs */}
+                                            <TextInput
+                                                value={newName}
+                                                onChangeText={setNewName}
+                                                placeholder="Enter a label"
+                                                placeholderTextColor={
+                                                    colours.textDim
+                                                }
+                                                style={{
+                                                    borderWidth: 1,
+                                                    borderRadius: 8,
+                                                    borderColor: colours.text,
+                                                    color: colours.text,
+                                                }}
+                                            ></TextInput>
+                                            <TextInput
+                                                value={newDescription}
+                                                placeholderTextColor={
+                                                    colours.textDim
+                                                }
+                                                style={{
+                                                    borderWidth: 1,
+                                                    borderRadius: 8,
+                                                    borderColor: colours.text,
+                                                    color: colours.text,
+                                                }}
+                                                onChangeText={setNewDescription}
+                                                placeholder="Add a description?"
+                                            ></TextInput>
+                                        </View>
+
+                                        <View
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                justifyContent: "space-between",
+                                            }}
+                                        >
+                                            {/* Delete */}
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    setTodoData(
+                                                        (currentTodos) =>
+                                                            currentTodos.filter(
+                                                                (td) =>
+                                                                    td.label !=
+                                                                    label
+                                                            )
+                                                    )
+                                                }
+                                            >
+                                                <DeleteButton
+                                                    width={30}
+                                                    height={30}
+                                                    fill={colours.text}
+                                                ></DeleteButton>
+                                            </TouchableOpacity>
+
+                                            {/* Submit */}
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    if (!(newName === "")) {
+                                                        setTodoData(
+                                                            (currentTodos) =>
+                                                                currentTodos.map(
+                                                                    (todo) =>
+                                                                        todo.id ===
+                                                                        id
+                                                                            ? {
+                                                                                  ...todo,
+                                                                                  label: newName,
+                                                                              }
+                                                                            : todo
+                                                                )
+                                                        );
+                                                        setTodoData(
+                                                            (currentTodos) =>
+                                                                currentTodos.map(
+                                                                    (todo) =>
+                                                                        todo.id ===
+                                                                        id
+                                                                            ? {
+                                                                                  ...todo,
+                                                                                  description:
+                                                                                      newDescription,
+                                                                              }
+                                                                            : todo
+                                                                )
+                                                        );
+                                                    }
+                                                    setOptionMenuOpen(false);
+                                                }}
+                                                style={{
+                                                    ...globalStyle.buttonContainer,
+                                                    backgroundColor:
+                                                        "transparent",
+                                                    borderWidth: 1,
+                                                    borderColor: colours.text,
+                                                    width: 100,
+                                                }}
+                                            >
+                                                <Text
+                                                    style={{
+                                                        ...globalStyle.smallText,
+                                                    }}
+                                                >
+                                                    Save/Cancel
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                </LinearGradient>
                             </View>
-                        </View>
+                        </LinearGradient>
                     </View>
                 </Modal>
             </View>
