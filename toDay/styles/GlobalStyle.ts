@@ -14,6 +14,13 @@ export const globalStyle = StyleSheet.create({
 
         borderRadius: 8
     },
+
+    buttonText: {
+        color: colours.text,
+        fontSize: fontStyle.normal, 
+        fontWeight: fontStyle.h2Weight, 
+        fontFamily: fontStyle.fontFamily
+    },
     
     smallText: {
         color: colours.text,

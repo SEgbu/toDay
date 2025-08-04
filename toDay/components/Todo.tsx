@@ -16,7 +16,11 @@ import { useReorderableDrag } from "react-native-reorderable-list";
 import { LinearGradient } from "expo-linear-gradient";
 import { colours } from "@/constants/Colours";
 import { globalStyle } from "@/styles/GlobalStyle";
+
 import DeleteButton from "../assets/iconmonstr-trash-can-filled.svg";
+import ThreeDots from "../assets/iconmonstr-menu-dot-horizontal-filled.svg";
+import OptionDots from "../assets/iconmonstr-menu-dot-horizontal-filled-options.svg";
+import React from "react";
 
 type TodoProps = {
     id: number;
@@ -64,12 +68,26 @@ export const Todo: React.FC<TodoProps> = ({
                         onPressIn={() => {
                             drag();
                         }}
-                        style={{
-                            backgroundColor: "grey",
-                            height: 30,
-                        }}
                     >
-                        <Text>Drag</Text>
+                        <View
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 8,
+                                transform: [{rotateZ: "90deg"}], 
+                            }}
+                        >
+                            <OptionDots
+                                width={24}
+                                height={6}
+                                fill={colours.text}
+                            ></OptionDots>
+                            <OptionDots
+                                width={24}
+                                height={6}
+                                fill={colours.text}
+                            ></OptionDots>
+                        </View>
                     </Pressable>
                 ) : null}
                 {/* Check and uncheck todos and update todo data */}
@@ -84,6 +102,11 @@ export const Todo: React.FC<TodoProps> = ({
                             )
                         );
                     }}
+                    style={{
+                        backgroundColor: colours.text,
+                        // borderWidth: 0
+                    }}
+                    color={colours.accent}
                 ></Checkbox>
 
                 {/* Strikethrough todo label if todo have been checked */}
@@ -101,6 +124,7 @@ export const Todo: React.FC<TodoProps> = ({
                     {/* Label (add "..." if they're too long) */}
                     <Text
                         style={{
+                            ...globalStyle.normalText,
                             textDecorationLine: completed
                                 ? "line-through"
                                 : "none",
@@ -117,6 +141,8 @@ export const Todo: React.FC<TodoProps> = ({
                     <Text
                         style={
                             {
+                                ...globalStyle.smallText,
+                                color: colours.textDim, 
                                 textDecorationLine: completed
                                     ? "line-through"
                                     : "none",
@@ -131,10 +157,10 @@ export const Todo: React.FC<TodoProps> = ({
                     >
                         {description != "" && description != undefined
                             ? description.length > 15 && !seeMore
-                                ? "Description: " +
+                                ? 
                                   description.substring(0, 15) +
                                   "..."
-                                : "Description: " + description
+                                : description
                             : null}
                     </Text>
                 </View>
@@ -147,7 +173,11 @@ export const Todo: React.FC<TodoProps> = ({
                         setNewDescription(description);
                     }}
                 >
-                    <Text>Options</Text>
+                    <ThreeDots
+                        width={30}
+                        height={30}
+                        fill={colours.text}
+                    ></ThreeDots>
                 </TouchableOpacity>
             </View>
 
@@ -204,7 +234,7 @@ export const Todo: React.FC<TodoProps> = ({
                                             display: "flex",
                                             justifyContent: "center",
                                             height: "100%",
-                                            gap: 30, 
+                                            gap: 30,
                                             padding: 20,
                                         }}
                                     >
@@ -313,12 +343,12 @@ export const Todo: React.FC<TodoProps> = ({
                                                         "transparent",
                                                     borderWidth: 1,
                                                     borderColor: colours.text,
-                                                    width: 100,
+                                                    width: 120,
                                                 }}
                                             >
                                                 <Text
                                                     style={{
-                                                        ...globalStyle.smallText,
+                                                        ...globalStyle.buttonText,
                                                     }}
                                                 >
                                                     Save/Cancel

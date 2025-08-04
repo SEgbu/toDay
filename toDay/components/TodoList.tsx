@@ -4,6 +4,7 @@ import { useCallback, useEffect } from "react";
 import { ListRenderItemInfo, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ReorderableList, { ReorderableListReorderEvent, reorderItems } from "react-native-reorderable-list";
+import React from "react";
 
 export type TodoType = {
     id: number;
@@ -101,6 +102,7 @@ export const TodoList: React.FC<TodoListProps> = ({
                 alignItems: "center",
                 height: 600,
             }}
+            
         >
             <View>
                 <ReorderableList
@@ -109,6 +111,9 @@ export const TodoList: React.FC<TodoListProps> = ({
                     keyExtractor={(td : TodoType) => td.id.toString()}
                     onReorder={handleReorder}
                     autoscrollThreshold={30}
+                    indicatorStyle={"white"}
+                    persistentScrollbar={true}
+                    fadingEdgeLength={20}
                 />
             </View>
         </View>

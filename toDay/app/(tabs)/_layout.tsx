@@ -5,6 +5,7 @@ import Calendar from "../../assets/iconmonstr-calendar-4.svg";
 import Todos from "../../assets/iconmonstr-task-list-square-filled.svg";
 import { globalStyle } from "@/styles/GlobalStyle";
 import { fontStyle } from "@/constants/Text";
+import React from "react";
 
 export default function RootLayout() {
     return (
@@ -22,7 +23,7 @@ export default function RootLayout() {
                     },
                     headerPressColor: "transparent", 
                     headerPressOpacity: 0,
-                    animation: "fade",
+                    animation: "none",
                 }}
             >
                 <Tabs.Screen

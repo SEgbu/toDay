@@ -41,6 +41,21 @@ export const CustomDay: React.FC<DayComponentProps> = ({ date }) => {
             }}
         >
             <View style={pieContainerStyle}>
+                <View
+                    style={{
+                        position: "absolute",
+                    }}
+                >
+                    {todoData[date.dateString] != undefined &&
+                    todoData[date.dateString].length > 0 ? (
+                        <PieSlice
+                            size={40}
+                            color={colours.secondary}
+                            percentage={100}
+                        />
+                    ) : null}
+                </View>
+
                 <PieSlice
                     size={40}
                     color={colours.primary}
@@ -84,16 +99,16 @@ export const CustomDay: React.FC<DayComponentProps> = ({ date }) => {
                     // }}
                     style={{
                         ...globalStyle.smallText,
-                        fontWeight: 
-                            (date.dateString == currentDate)
+                        fontWeight:
+                            date.dateString == currentDate
                                 ? fontStyle.h1Weight
                                 : fontStyle.smallWeight,
                         color:
-                            (date.dateString == currentDate)
+                            date.dateString == currentDate
                                 ? colours.accent
-                                : !(todoData[date.dateString]?.length > 0)
-                                    ? colours.textDim
-                                    : colours.text,
+                                : (todoData[date.dateString] != undefined && todoData[date.dateString].length > 0)
+                                    ? colours.text
+                                    : colours.textDim,
                     }}
                 >
                     {date.day}

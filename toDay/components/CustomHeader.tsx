@@ -9,6 +9,7 @@ import MaskedView from "@react-native-masked-view/masked-view";
 import Arrow from "../assets/iconmonstr-arrow-left-circle-filled.svg";
 import QuickNav from "../assets/iconmonstr-caret-down-circle.svg";
 import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
 
 export const CustomHeader: React.FC<CalendarProps> = (props) => {
     const {
@@ -232,7 +233,7 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
                                                 borderColor: colours.text,
                                             }}
                                         >
-                                            <Text style={globalStyle.smallText}>
+                                            <Text style={globalStyle.buttonText}>
                                                 Cancel
                                             </Text>
                                         </TouchableOpacity>
@@ -258,7 +259,7 @@ export const CustomHeader: React.FC<CalendarProps> = (props) => {
                                                 borderColor: colours.text,
                                             }}
                                         >
-                                            <Text style={globalStyle.smallText}>
+                                            <Text style={globalStyle.buttonText}>
                                                 Go
                                             </Text>
                                         </TouchableOpacity>

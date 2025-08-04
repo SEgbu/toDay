@@ -8,6 +8,7 @@ import { ComponentType } from "react";
 import { CustomHeader } from "@/components/CustomHeader";
 import { colours } from "@/constants/Colours";
 import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
 
 export default function CalendarPage() {
     return (
