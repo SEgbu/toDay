@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "toDay",
+    "slug": "toDay",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/toDayIcon.png",
+    "scheme": "today",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/toDayIcon.png",
+        "backgroundColor": "#050518"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.sincerityegbu.toDay"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/toDayIcon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/toDayIcon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#050518"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "702a8ea8-b3b2-4ddc-b2a7-8422a239bdb5"
+      }
+    }
+  }
+}

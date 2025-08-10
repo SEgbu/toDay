@@ -34,6 +34,7 @@ export default function CalendarPage() {
                 style={{
                     height: "100%",
                     display: "flex",
+                    paddingTop: "10%",
                     justifyContent: "flex-start",
                     gap: 70,
                     backgroundColor: "transparent"

@@ -3,8 +3,6 @@ import { useCallback, useState } from "react";
 import { TouchableOpacity, Modal, Text, TextInput, View } from "react-native";
 import { CalendarProps } from "react-native-calendars";
 import { colours } from "@/constants/Colours";
-import { BlurView } from "expo-blur";
-import MaskedView from "@react-native-masked-view/masked-view";
 
 import Arrow from "../assets/iconmonstr-arrow-left-circle-filled.svg";
 import QuickNav from "../assets/iconmonstr-caret-down-circle.svg";
@@ -13,13 +11,10 @@ import React from "react";
 
 export const CustomHeader: React.FC<CalendarProps> = (props) => {
     const {
-        theme,
-        style: propsStyle,
         addMonth: propsAddMonth,
         month,
         monthFormat = "MMMM yyyy",
-
-        renderArrow,
+        
         onPressArrowLeft,
         onPressArrowRight,
     } = props;
